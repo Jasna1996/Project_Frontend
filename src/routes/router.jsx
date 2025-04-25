@@ -1,53 +1,49 @@
-import {createBrowserRouter  } from "react-router-dom";
-import HomePage                from "../pages/userPage/HomePage";
-import UserLayout              from "../layouts/UserLayout";
-import About                   from "../pages/userPage/About";
-import Turfs                   from "../pages/userPage/Turfs";
-import Login                   from "../pages/shared/Login";
-import Bookings                from "../pages/userPage/Booking";
-import Signup                  from "../pages/shared/Signup";
-import ContactUs               from "../pages/userPage/ContactUs";
-
-
-
-
+import { createBrowserRouter } from "react-router-dom";
+import UserLayout from "../layouts/UserLayout";
+import HomePage from "../pages/userPage/HomePage";
+import About from "../pages/userPage/About";
+import ContactUs from "../pages/userPage/ContactUs"
+import Turfs from "../pages/userPage/Turfs"
+import Bookings from "../pages/userPage/Bookings"
+import Login from "../pages/shared/Login";
+import Signup from "../pages/shared/Signup"
 
 export const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <UserLayout/>,
-      errorElement:<h2>Error page</h2>,
+  {
+    path: "/",
+    element: <UserLayout />,
+    errorElement: <h2>Error page</h2>,
 
-      children:[
-        {
-          path:"",
-          element:<HomePage/>
-        },
+    children: [
       {
-        path:"about",
-        element:<About/>
+        path: "",
+        element: <HomePage />
       },
       {
-        path:"contactUs",
-        element:<ContactUs/>
+        path: "about",
+        element: <About />
       },
       {
-        path:"turfs",
-        element:<Turfs/>
+        path: "contactUs",
+        element: <ContactUs />
       },
       {
-        path:"bookings",
-        element:<Bookings/>
+        path: "turfs",
+        element: <Turfs />
       },
       {
-        path:"login",
-        element:<Login/>
+        path: "bookings",
+        element: <Bookings />
       },
       {
-        path:"signup",
-        element:<Signup/>
+        path: "login",
+        element: <Login />
       },
-      ]
-    },
+      {
+        path: "signup",
+        element: <Signup />
+      },
+    ]
+  },
 
-  ]);
+]);
