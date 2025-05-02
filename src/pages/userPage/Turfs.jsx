@@ -17,7 +17,7 @@ function Turfs() {
       setLocations(locationList);
       if (locationList.length > 0) {
         console.log("First location ID:", locationList[0]._id)
-        setSelectedLocationId(locationList[0]._id)//auto select first location
+        setSelectedLocationId(locationList[0]._id)  //auto select first location
       }
     }).catch((err) => console.log(err))
   }, []);
@@ -30,7 +30,7 @@ function Turfs() {
         .then((res) => {
 
           setTurfs(res.data.data);
-
+          console.log("Turfs:", res.data.data);
 
         })
         .catch((err) => console.log("Error fetching turfs:", err));
@@ -63,16 +63,35 @@ function Turfs() {
               <div className="card-body">
                 <h2 className="card-title">{turf.name}</h2>
                 <p>{turf.description}</p>
-                <p>💰 {turf.pricePerHead} per head</p>
+                <div>
+                  <p className="font-semibold">💰 Price Per Hour (by Sport):</p>
+                  {turf.pricePerHour &&
+                    Object.entries(
+                      turf.pricePerHour instanceof Map
+                        ? Object.fromEntries(turf.pricePerHour)
+                        : turf.pricePerHour
+                    ).map(([sport, price]) => (
+                      <p key={sport}>
+                        🏅 <strong>{sport}</strong>: ₹{price}
+                      </p>
+                    ))
+                  }
+                </div>
+
+
                 <p>⭐ {turf.ratings} ratings</p>
                 <button className="btn btn-success btn-sm"
                   onClick={() => document.getElementById(`modal_${turf._id}`).showModal()}>Check Availability</button>
               </div>
               <TimeSlots
+                turf={turf}
                 turfId={turf._id}
                 turfName={turf.name}
-                slots={["6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM"]} />
-            </div>
+                slots={turf.slots || ["6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM"]}
+
+                // pricePerHour={turf.pricePerHour || {}}
+                bookedSlots={turf.bookedSlots}
+              />            </div>
           ))
         ) : (
           <p className="text-gray-500">No turfs available for this location.</p>

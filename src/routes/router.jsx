@@ -7,6 +7,9 @@ import Turfs from "../pages/userPage/Turfs"
 import Bookings from "../pages/userPage/Bookings"
 import Login from "../pages/shared/Login";
 import Signup from "../pages/shared/Signup"
+import BookNow from "../pages/userPage/BookNow";
+import Payment from "../pages/userPage/Payment";
+import PaymentSuccess from "../pages/userPage/PaymentSuccess";
 
 export const router = createBrowserRouter([
   {
@@ -43,6 +46,19 @@ export const router = createBrowserRouter([
         path: "signup",
         element: <Signup />
       },
+      {
+        path: "booknow",
+        element: <BookNow />
+      },
+      {
+        path: "payment",
+        element: <Payment />
+      },
+      {
+        path: 'payment/success',
+        element: <PaymentSuccess />
+      },
+
     ]
   },
 
