@@ -10,10 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.7.0",
+    "@stripe/react-stripe-js": "^3.6.0",
     "axios": "^1.8.4",
+    "lucide-react": "^0.503.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router-dom": "^7.5.0"
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^7.5.0",
+    "react-toastify": "^11.0.5",
+    "redux-persist": "^6.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
@@ -29,5 +35,18 @@
     "postcss": "^8.5.3",
     "tailwindcss": "^3.4.17",
     "vite": "^6.2.0"
-  }
+  },
+  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
+  "main": "eslint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jasna1996/Project_Frontend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jasna1996/Project_Frontend/issues"
+  },
+  "homepage": "https://github.com/Jasna1996/Project_Frontend#readme"
 }
