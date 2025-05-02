@@ -5,7 +5,7 @@ import { userLogin } from '../../services/userServices';
 import { useDispatch } from 'react-redux'
 import { saveUser } from '../../redux/features/userSlice';
 
-function Login() {
+function Login({ role }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [values, setValues] = useState({
@@ -14,15 +14,25 @@ function Login() {
   });
   const onSubmit = (e) => {
     e.preventDefault();
-    userLogin(values).then((res) => {
-      toast.success(res?.data?.message || "User login Successfully!")
-      dispatch(saveUser(res.data.user))
-      //   localStorage.getItem("userToken",res.data.token);
-      navigate("/")
+    userLogin(values, role).then((res) => {
+      if (role == "admin") {
+        localStorage.setItem("admin-token", res?.data?.token)
+        toast.success(res?.data?.message || "Admin login Successfully!");
+        navigate("/admin/dashboard")
+
+      } else {
+
+        localStorage.setItem("userToken", res.data.token);
+        localStorage.setItem("userId", res.data.user._id);
+        toast.success(res?.data?.message || "User login Successfully!")
+        dispatch(saveUser(res.data.user))
+        navigate("/")
+      }
     }).catch(err => {
       console.log("Login error:", err);
       const errorMessage = err?.response?.data?.message || "Something went wrong!";
       toast.error(errorMessage?.response?.data?.message || "Login failed");
+      toast.error(errorMessage);
     })
   }
   return (
@@ -48,7 +58,8 @@ function Login() {
 
 
         <div className="bg-white bg-opacity-10 backdrop-blur-md p-6 md:p-10 rounded-xl shadow-2xl w-full max-w-sm md:max-w-md">
-          <h1 className="text-3xl md:text-4xl font-bold mb-6 text-white">Login Here!</h1>
+          <h1 className="text-3xl md:text-4xl font-bold mb-6 text-white">
+            {role === 'admin' ? 'Admin Login Here!' : 'Login Here!'}</h1>
           <form className="flex flex-col gap-4">
             <input
               type="email"

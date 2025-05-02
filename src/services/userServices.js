@@ -12,8 +12,8 @@ export const userSignup = (data) => {
     return axiosInstance.post("/user/register", data)
 }
 
-export const userLogin = (data) => {
-    return axiosInstance.post("/user/login", data)
+export const userLogin = (data, role) => {
+    return axiosInstance.post(`/user/login?role=${role}`, data)
 }
 
 export const userLogout = () => {
@@ -27,3 +27,6 @@ export const makePaymentOnStripe = (paymentBody) => {
     return axiosInstance.post(`/payment/makepayment`, paymentBody)
 }
 
+export const getBookings = (userId) => {
+    return axiosInstance.get(`/user/getBookings?userId=${userId}`)
+}

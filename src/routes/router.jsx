@@ -10,6 +10,8 @@ import Signup from "../pages/shared/Signup"
 import BookNow from "../pages/userPage/BookNow";
 import Payment from "../pages/userPage/Payment";
 import PaymentSuccess from "../pages/userPage/PaymentSuccess";
+import AdminLayout from "../layouts/AdminLayout";
+import AdminDashboard from "../pages/adminPage/AdminDashbard";
 
 export const router = createBrowserRouter([
   {
@@ -61,5 +63,21 @@ export const router = createBrowserRouter([
 
     ]
   },
+  {
+    path: "/admin",
+    element: <AdminLayout />,
+    errorElement: <h2>Error page</h2>,
+
+    children: [
+      {
+        path: "login",
+        element: <Login role="admin" />
+      },
+      {
+        path: "dashboard",
+        element: <AdminDashboard />
+      },
+    ]
+  }
 
 ]);
