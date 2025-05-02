@@ -58,7 +58,7 @@ function Bookings() {
         <div className="p-6 max-w-4xl mx-auto">
             <h2 className="text-2xl font-bold mb-4">Your Bookings</h2>
             {bookings.length === 0 ? (
-                <p>No bookings found.</p>
+                <p>No bookings for you.</p>
             ) : (
                 <div className="space-y-4">
                     {bookings.map((booking) => (

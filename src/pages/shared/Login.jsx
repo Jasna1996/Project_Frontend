@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate, } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify';
 import { userLogin } from '../../services/userServices';
 import { useDispatch } from 'react-redux'
@@ -8,10 +8,15 @@ import { saveUser } from '../../redux/features/userSlice';
 function Login({ role }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
   const [values, setValues] = useState({
     email: '',
     password: ''
   });
+
+  const from = location.state?.from || '/';
+  const bookingData = location.state?.data || null;
+
   const onSubmit = (e) => {
     e.preventDefault();
     userLogin(values, role).then((res) => {
@@ -25,8 +30,14 @@ function Login({ role }) {
         localStorage.setItem("userToken", res.data.token);
         localStorage.setItem("userId", res.data.user._id);
         toast.success(res?.data?.message || "User login Successfully!")
-        dispatch(saveUser(res.data.user))
-        navigate("/")
+        dispatch(saveUser(res.data.user));
+        // Redirect logic with booking data
+        if (from === '/booknow' && bookingData) {
+          navigate(from, { state: bookingData });
+        } else {
+          navigate("/");
+        }
+
       }
     }).catch(err => {
       console.log("Login error:", err);

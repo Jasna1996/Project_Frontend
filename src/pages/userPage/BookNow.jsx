@@ -12,6 +12,7 @@ function BookNow() {
 
   const location = useLocation();
   const navigate = useNavigate();
+
   const {
     turfId,
     turfName,
@@ -24,6 +25,12 @@ function BookNow() {
   const [email, setEmail] = useState('');
 
   const handleBooking = async () => {
+
+    if (!localStorage.getItem('userToken')) {
+      navigate('/login', { state: { from: '/booknow', data: location.state } });
+      return;
+    }
+
     if (!email) {
       alert("Please enter your email");
       return;
@@ -32,12 +39,13 @@ function BookNow() {
     try {
       const bookingData = {
         email,
+        turfId,
+        turfName,
         date,
         time_From: timeFrom,
         time_To: timeTo,
-        turfName,
-        turfId
       };
+
       const bookingRes = await axiosInstance.post(`/user/booking`, bookingData);
       if (!bookingRes?.data?.success) {
         alert(bookingRes?.data?.message || "Booking failed");
@@ -72,11 +80,18 @@ function BookNow() {
 
     } catch (error) {
       console.error(error);
-      alert(error.response?.data?.message || "Something went wrong. Please try again later.");
+      const status = error?.response?.status;
+
+      if (status === 401) {
+        // Token invalid or expired → force login
+        navigate('/login', { state: { from: '/booknow', data: location.state } });
+      } else {
+        alert(error.response?.data?.message || "Something went wrong. Please try again later.");
+      }
     }
   };
 
-  if (!turfId || !turfName || !timeFrom || !timeTo || !date) {
+  if (!turfId || !turfName || !date || !timeFrom || !timeTo) {
     return <div className="p-6 text-red-500">Missing booking details. Please try again.</div>;
   }
 

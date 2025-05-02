@@ -14,8 +14,9 @@ function Header() {
     try {
       userLogout().then(() => {
         persistor.purge();
-        dispatch(clearUser())
+        dispatch(clearUser()) 
         toast.success("Logged out successfully");
+        navigate("/");
       })
     } catch (error) {
       console.log(error)
@@ -37,7 +38,9 @@ function Header() {
           <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/about")}>About Us</li>
           <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/contactUs")}>Contact Us</li>
           <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/turfs")}>Turfs</li>
-          <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/bookings")}>Bookings</li>
+          {isLoggedIn && (
+            <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/bookings")}>Bookings</li>
+          )}
           {userData.user && Object.keys(userData.user).length > 0 ? <div>
             <span>{userData.user.name}</span>
             <li className="cursor-pointer" onClick={handleLogout}>Logout</li>
