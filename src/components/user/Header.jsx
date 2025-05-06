@@ -14,7 +14,7 @@ function Header() {
     try {
       userLogout().then(() => {
         persistor.purge();
-        dispatch(clearUser()) 
+        dispatch(clearUser())
         toast.success("Logged out successfully");
         navigate("/");
       })
@@ -51,26 +51,26 @@ function Header() {
         </ul>
       </div>
 
-      {/* Mobile dropdown */}
+      {/* Mobile Dropdown */}
       <div className="dropdown dropdown-end md:hidden">
         <label tabIndex={0} className="btn btn-ghost">
           <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </label>
-        <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 p-2 shadow bg-green-500  text-white rounded-box w-52">
+        <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 p-2 shadow bg-green-500 text-white rounded-box w-52">
           <li><Link to="/">Home</Link></li>
+          <li><Link to="/about">About Us</Link></li>
+          <li><Link to="/contactUs">Contact Us</Link></li>
           <li><Link to="/turfs">Turfs</Link></li>
-          <li><Link to="/bookings">Bookings</Link></li>
+          {isLoggedIn && <li><Link to="/bookings">Bookings</Link></li>}
           {isLoggedIn ? (
             <>
               <li>{userData.user.name}</li>
               <li onClick={handleLogout}>Logout</li>
             </>
           ) : (
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
+            <li><Link to="/login">Login</Link></li>
           )}
         </ul>
       </div>

@@ -12,6 +12,11 @@ import Payment from "../pages/userPage/Payment";
 import PaymentSuccess from "../pages/userPage/PaymentSuccess";
 import AdminLayout from "../layouts/AdminLayout";
 import AdminDashboard from "../pages/adminPage/AdminDashbard";
+import ManageLocations from "../pages/adminPage/ManageLocations";
+import ManageManagers from "../pages/adminPage/ManageManagers";
+import ManageTurfs from "../pages/adminPage/ManageTurfs";
+import ViewBookings from '../pages/adminPage/ViewBookings';
+import ViewPayments from '../pages/adminPage/ViewPayments';
 
 export const router = createBrowserRouter([
   {
@@ -70,6 +75,10 @@ export const router = createBrowserRouter([
 
     children: [
       {
+        path: "",
+        element: <HomePage />
+      },
+      {
         path: "login",
         element: <Login role="admin" />
       },
@@ -77,6 +86,26 @@ export const router = createBrowserRouter([
         path: "dashboard",
         element: <AdminDashboard />
       },
+      {
+        path: "managelocations",
+        element: <ManageLocations />
+      },
+      {
+        path: "managers",
+        element: <ManageManagers />
+      },
+      {
+        path: "manageturf",
+        element: <ManageTurfs />
+      },
+      {
+        path: "viewbookings",
+        element: <ViewBookings />
+      },
+      {
+        path: "viewpayments",
+        element: <ViewPayments />
+      }
     ]
   }
 
