@@ -1,12 +1,15 @@
 import React from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import Footer from '../components/user/Footer'
 import AdminHeader from '../components/admin/AdminHeader'
 
 function AdminLayout() {
+    const location = useLocation();
+
+    const hideHeader = location.pathname === '/admin/login'
     return (
         <div className="flex flex-col min-h-screen">
-            < AdminHeader />
+            {!hideHeader && < AdminHeader />}
             <main className="flex-grow">
                 <Outlet />
             </main>

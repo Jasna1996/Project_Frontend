@@ -44,9 +44,12 @@ function BookNow() {
         date,
         time_From: timeFrom,
         time_To: timeTo,
+        priceEstimate
+
       };
 
       const bookingRes = await axiosInstance.post(`/user/booking`, bookingData);
+      const bookingId = bookingRes.data.bookingId;
       if (!bookingRes?.data?.success) {
         alert(bookingRes?.data?.message || "Booking failed");
         return;

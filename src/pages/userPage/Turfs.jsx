@@ -38,68 +38,94 @@ function Turfs() {
   }, [selectedLocationId]);
 
   return (
-    <div className='p-4'>
-      <h2 className="text-xl font-bold mb-4">Select Location</h2>
-      <ul className="menu menu-vertical lg:menu-horizontal bg-base-200 rounded-box mb-6">
-        {locations.map((location) => (
-          <li key={location._id}>
-            <a className={selectedLocationId === location._id ? 'active' : ''}
-              onClick={() => setSelectedLocationId(location._id)}>{location.name}</a>
-          </li>
-        ))}
-      </ul>
+    <div className="p-4 max-w-7xl mx-auto">
+      {/* Select Location Title */}
+      <h2 className="text-3xl font-bold text-center mb-4 text-green-700">Select Location</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {/* Location Selector */}
+      <div className="flex justify-center mb-10">
+        <ul className="flex flex-wrap gap-3 bg-gray-100 p-3 rounded-full shadow-md">
+          {locations.map((location) => (
+            <li key={location._id}>
+              <button
+                onClick={() => setSelectedLocationId(location._id)}
+                className={`px-5 py-2 rounded-full transition-all font-medium text-sm
+                  ${selectedLocationId === location._id
+                    ? 'bg-green-600 text-white'
+                    : 'bg-white text-gray-800 hover:bg-green-200 border border-gray-300'}`}
+              >
+                {location.name}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Turf Display */}
+      <div className="space-y-8">
         {turfs.length > 0 ? (
           turfs.map((turf) => (
-            <div key={turf._id} className="card bg-base-100 shadow-xl">
-              <figure>
+            <div key={turf._id} className="bg-white shadow-xl rounded-xl overflow-hidden flex flex-col lg:flex-row">
+              {/* Image - Left */}
+              <div className="md:w-2/5 w-full h-60 md:h-64">
                 <img
                   src={turf.image}
                   alt={turf.name}
-                  className="w-full h-48 object-cover"
+                  className="w-full h-full object-cover"
                 />
-              </figure>
-              <div className="card-body">
-                <h2 className="card-title">{turf.name}</h2>
-                <p>{turf.description}</p>
+              </div>
+
+              {/* Details - Right */}
+              <div className="md:w-3/5 w-full p-5 flex flex-col justify-between">
                 <div>
-                  <p className="font-semibold">💰 Price Per Hour (by Sport):</p>
-                  {turf.pricePerHour &&
-                    Object.entries(
-                      turf.pricePerHour instanceof Map
-                        ? Object.fromEntries(turf.pricePerHour)
-                        : turf.pricePerHour
-                    ).map(([sport, price]) => (
-                      <p key={sport}>
-                        🏅 <strong>{sport}</strong>: ₹{price}
-                      </p>
-                    ))
-                  }
+                  <h3 className="text-2xl font-semibold text-green-700 mb-2">{turf.name}</h3>
+                  <p className="text-gray-700 mb-3">{turf.description}</p>
+
+                  <div className="mb-3">
+                    <p className="font-semibold mb-1">💰 Price Per Hour (by Sport):</p>
+                    {turf.pricePerHour &&
+                      Object.entries(
+                        turf.pricePerHour instanceof Map
+                          ? Object.fromEntries(turf.pricePerHour)
+                          : turf.pricePerHour
+                      ).map(([sport, price]) => (
+                        <p key={sport} className="text-sm">
+                          🏅 <strong>{sport}</strong>: ₹{price}
+                        </p>
+                      ))}
+                  </div>
+
+                  <p className="text-yellow-600 text-sm">⭐ {turf.ratings} ratings</p>
                 </div>
 
-
-                <p>⭐ {turf.ratings} ratings</p>
-                <button className="btn btn-success btn-sm"
-                  onClick={() => document.getElementById(`modal_${turf._id}`).showModal()}>Check Availability</button>
+                <div className="mt-4">
+                  <button
+                    className="btn btn-success w-full"
+                    onClick={() => document.getElementById(`modal_${turf._id}`).showModal()}
+                  >
+                    Check Availability
+                  </button>
+                </div>
               </div>
+
+              {/* Timeslot Modal */}
               <TimeSlots
                 turf={turf}
                 turfId={turf._id}
                 turfName={turf.name}
                 slots={turf.slots || ["6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM"]}
-
-                // pricePerHour={turf.pricePerHour || {}}
                 bookedSlots={turf.bookedSlots}
-              />            </div>
+              />
+            </div>
           ))
         ) : (
-          <p className="text-gray-500">No turfs available for this location.</p>
+          <p className="text-gray-500 text-center">No turfs available for this location.</p>
         )}
       </div>
-
     </div>
-  )
+  );
+
+
 }
 
 export default Turfs

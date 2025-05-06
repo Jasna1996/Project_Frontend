@@ -16,7 +16,6 @@ import ManageLocations from "../pages/adminPage/ManageLocations";
 import ManageManagers from "../pages/adminPage/ManageManagers";
 import ManageTurfs from "../pages/adminPage/ManageTurfs";
 import ViewBookings from '../pages/adminPage/ViewBookings';
-import ViewPayments from '../pages/adminPage/ViewPayments';
 
 export const router = createBrowserRouter([
   {
@@ -75,13 +74,14 @@ export const router = createBrowserRouter([
 
     children: [
       {
-        path: "",
-        element: <HomePage />
-      },
-      {
         path: "login",
         element: <Login role="admin" />
       },
+      {
+        path: "",
+        element: <HomePage />
+      },
+      
       {
         path: "dashboard",
         element: <AdminDashboard />
@@ -101,11 +101,8 @@ export const router = createBrowserRouter([
       {
         path: "viewbookings",
         element: <ViewBookings />
-      },
-      {
-        path: "viewpayments",
-        element: <ViewPayments />
       }
+
     ]
   }
 

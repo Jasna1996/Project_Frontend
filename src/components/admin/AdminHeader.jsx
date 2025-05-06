@@ -39,15 +39,8 @@ function AdminHeader() {
                     <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/admin/manageturf")}>Turfs</li>
                     <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/admin/managers")}>Managers</li>
                     <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/admin/viewbookings")}>View Bookings</li>
-                    <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/admin/viewpayments")}>View Payments</li>
+                    <li className="cursor-pointer" onClick={() => navigate("/login")}>Logout</li>
 
-                    {userData.user && Object.keys(userData.user).length > 0 ? <div>
-                        <span>{userData.user.name}</span>
-                        <li className="cursor-pointer" onClick={handleLogout}>Logout</li>
-                    </div> :
-
-                        <li className="cursor-pointer" onClick={() => navigate("/login")}>Login</li>
-                    }
                 </ul>
             </div>
 

@@ -24,14 +24,7 @@ function AdminDashboard() {
                     </div>
                 </div>
 
-                {/* Add more sections below as needed */}
-                <div className="mt-10">
-                    <h3 className="text-2xl font-semibold mb-4">Recent Bookings</h3>
-                    {/* Placeholder table or list */}
-                    <div className="bg-white p-4 rounded-xl shadow">
-                        <p>No recent bookings to show.</p>
-                    </div>
-                </div>
+
             </div>
         </div>
     );
