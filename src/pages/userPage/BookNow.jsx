@@ -79,12 +79,6 @@ function BookNow() {
       console.error(error);
       const status = error?.response?.status;
 
-      if (status === 401) {
-        // Token invalid or expired → force login
-        navigate('/login', { state: { from: '/booknow', data: location.state } });
-      } else {
-        alert(error.response?.data?.message || "Something went wrong. Please try again later.");
-      }
     }
   };
 
