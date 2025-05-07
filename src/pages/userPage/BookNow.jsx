@@ -25,12 +25,6 @@ function BookNow() {
   const [email, setEmail] = useState('');
 
   const handleBooking = async () => {
-
-    if (!localStorage.getItem('userToken')) {
-      navigate('/login', { state: { from: '/booknow', data: location.state } });
-      return;
-    }
-
     if (!email) {
       alert("Please enter your email");
       return;
