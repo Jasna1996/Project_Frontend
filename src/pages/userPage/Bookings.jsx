@@ -16,7 +16,11 @@ function Bookings() {
                 const response = await getBookings(userId);
                 console.log(response)
                 if (response.data.success) {
-                    setBookings(response.data.bookings);
+                    if (response.data.bookings.length === 0) {
+                        setError("No bookings found.");
+                    } else {
+                        setBookings(response.data.bookings);
+                    }
                 } else {
                     setError(response.data.message || 'Failed to load bookings.');
                 }
@@ -52,7 +56,21 @@ function Bookings() {
     };
 
     if (loading) return <div className="p-6">Loading bookings...</div>;
-    if (error) return <div className="p-6 text-red-500">{error}</div>;
+    if (error) {
+        return (
+            <div className="p-6 text-center">
+                <p className="text-red-500 mb-4">{error}</p>
+                {error === "No bookings found." && (
+                    <button
+                        onClick={() => window.location.href = "/turfs"}
+                        className="px-4 py-2 bg-lime-500 text-white rounded hover:bg-lime-600"
+                    >
+                        Book Turf
+                    </button>
+                )}
+            </div>
+        );
+    }
 
     return (
         <div className="p-6 max-w-4xl mx-auto">

@@ -29,6 +29,7 @@ function Header() {
       <div className="flex-1">
         <Link to="/" className="text-2xl font-bold text-white">
           PlayNest
+          <span className="ml-2 text-sm font-normal">Hi, {userData?.user?.name}</span>
         </Link>
       </div>
 
@@ -42,7 +43,7 @@ function Header() {
             <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/bookings")}>Bookings</li>
           )}
           {userData.user && Object.keys(userData.user).length > 0 ? <div>
-            <span>{userData.user.name}</span>
+
             <li className="cursor-pointer" onClick={handleLogout}>Logout</li>
           </div> :
 
