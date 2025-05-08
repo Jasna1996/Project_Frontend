@@ -28,5 +28,7 @@ export const makePaymentOnStripe = (paymentBody) => {
 }
 
 export const getBookings = (userId) => {
-    return axiosInstance.get(`/user/getBookings?userId=${userId}`)
+    return axiosInstance.get(`/user/getBookings?userId=${userId}`,
+        { withCredentials: true }
+    )
 }
