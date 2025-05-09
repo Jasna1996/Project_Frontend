@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../../axios/axiosInstance';
 
 import { loadStripe } from '@stripe/stripe-js';
-import { makePaymentOnStripe } from '../../services/userServices';
+import { bookTurf, makePaymentOnStripe } from '../../services/userServices';
 import { calculatePrice } from '../../utilities/priceUtils';
 
 const stripePromise = loadStripe(import.meta.env.VITE_PUBLISHED_KEY_STRIPE);
@@ -42,7 +42,7 @@ function BookNow() {
 
       };
 
-      const bookingRes = await axiosInstance.post(`/user/booking`, bookingData);
+      const bookingRes = await bookTurf(bookingData);
       const bookingId = bookingRes.data.bookingId;
       if (!bookingRes?.data?.success) {
         alert(bookingRes?.data?.message || "Booking failed");

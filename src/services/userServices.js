@@ -20,8 +20,8 @@ export const userLogout = () => {
     return axiosInstance.post("/user/logout")
 }
 
-export const bookTurf = () => {
-    return axiosInstance.post("/user/booking")
+export const bookTurf = (bookingData) => {
+    return axiosInstance.post("/user/booking", bookingData)
 }
 export const makePaymentOnStripe = (paymentBody) => {
     return axiosInstance.post(`/payment/makepayment`, paymentBody)
