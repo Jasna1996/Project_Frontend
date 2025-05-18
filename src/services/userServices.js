@@ -13,7 +13,10 @@ export const userSignup = (data) => {
 }
 
 export const userLogin = (data, role) => {
-    return axiosInstance.post(`/user/login?role=${role}`, data)
+    if (role) {
+        return axiosInstance.post(`/user/login?role=${role}`, data)
+    }
+    return axiosInstance.post(`/user/login?`, data)
 }
 
 export const userLogout = () => {
