@@ -29,7 +29,9 @@ function Header() {
       <div className="flex-1">
         <Link to="/" className="text-2xl font-bold text-white">
           PlayNest
-          <span className="ml-2 text-sm font-normal">Hi, {userData?.user?.name}</span>
+          {userData?.user?.name && (
+            <span className="ml-2 text-sm font-normal">Hi, {userData.user.name}</span>
+          )}
         </Link>
       </div>
 

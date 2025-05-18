@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { calculatePrice } from '../../utilities/priceUtils';
+import { toast } from 'react-toastify'
 
 function TimeSlots({ turf, turfId, turfName, slots = [], bookedSlots = [] }) {
     const [timeFrom, setTimeFrom] = useState(null);
@@ -20,23 +21,32 @@ function TimeSlots({ turf, turfId, turfName, slots = [], bookedSlots = [] }) {
     const handleBookNow = () => {
 
         if (!date || !timeFrom || !timeTo || !selectedSport) {
-            alert("Please select a date, sport, and time slot.");
+            toast.warn("Please select a date, sport, and time slot.");
             return;
         }
 
         const estimatedPrice = calculatePrice(turf.pricePerHour, selectedSport, timeFrom, timeTo);
 
+        const bookingData = {
+            turfId,
+            turfName,
+            date,
+            timeFrom,
+            timeTo,
+            priceEstimate: estimatedPrice,
+            selectedSport,
+        }
+        const token = localStorage.getItem("userToken");
+        if (!token) {
+            toast.warn("Please login to continue");
+            navigate("/login", { state: { from: "/booknow", data: bookingData } });
+            return;
+        }
+
 
         navigate('/booknow', {
-            state: {
-                turfId,
-                turfName,
-                date,
-                timeFrom,
-                timeTo,
-                priceEstimate: estimatedPrice,
-                selectedSport,
-            },
+            state: bookingData
+
         });
     };
 
