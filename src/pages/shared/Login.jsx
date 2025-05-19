@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify';
 import { userLogin } from '../../services/userServices';
@@ -15,13 +15,16 @@ function Login({ role }) {
   });
 
   const from = location.state?.from || '/';
-  const pendingBooking = localStorage.getItem("pendingBooking");
-  if (pendingBooking) {
-    localStorage.removeItem("pendingBooking");
-    navigate(from, { state: JSON.parse(pendingBooking) });
-  } else {
-    navigate(from);
-  }
+
+  useEffect(() => {
+    const pending = localStorage.getItem("pendingBooking");
+    if (pending) {
+      localStorage.removeItem("pendingBooking");
+      navigate(from, { state: JSON.parse(pending) });
+    }
+  }, [from, navigate]);
+
+
   const bookingData = location.state?.data || null;
 
   const onSubmit = (e) => {
