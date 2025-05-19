@@ -15,6 +15,13 @@ function Login({ role }) {
   });
 
   const from = location.state?.from || '/';
+  const pendingBooking = localStorage.getItem("pendingBooking");
+  if (pendingBooking) {
+    localStorage.removeItem("pendingBooking");
+    navigate(from, { state: JSON.parse(pendingBooking) });
+  } else {
+    navigate(from);
+  }
   const bookingData = location.state?.data || null;
 
   const onSubmit = (e) => {

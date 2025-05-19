@@ -39,7 +39,8 @@ function TimeSlots({ turf, turfId, turfName, slots = [], bookedSlots = [] }) {
         const token = localStorage.getItem("userToken");
         if (!token) {
             toast.warn("Please login to continue");
-            navigate("/login", { state: { from: "/booknow", data: bookingData } });
+            localStorage.setItem("PendingBooking", JSON.stringify(bookingData));
+            navigate("/login", { state: { from: "/booknow" } });
             return;
         }
 
