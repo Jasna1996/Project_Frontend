@@ -5,6 +5,7 @@ import { axiosInstance } from '../../axios/axiosInstance';
 import { loadStripe } from '@stripe/stripe-js';
 import { bookTurf, makePaymentOnStripe } from '../../services/userServices';
 import { calculatePrice } from '../../utilities/priceUtils';
+import { toast } from 'react-toastify';
 
 const stripePromise = loadStripe(import.meta.env.VITE_PUBLISHED_KEY_STRIPE);
 
@@ -45,7 +46,12 @@ function BookNow() {
       const bookingRes = await bookTurf(bookingData);
       const bookingId = bookingRes.data.bookingId;
       if (!bookingRes?.data?.success) {
-        alert(bookingRes?.data?.message || "Booking failed");
+        const errorMessage = bookingRes?.data?.message || "Booking failed";
+        if (errorMessage.includes("already exists")) {
+          toast.error("Booking already exists for this slot.");
+        } else {
+          toast.error(errorMessage);
+        }
         return;
       }
 

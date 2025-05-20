@@ -72,6 +72,15 @@ function Bookings() {
         );
     }
 
+    const formatTime = (timeStr) => {
+        const [hourStr, minuteStr] = timeStr.split(':');
+        let hours = parseInt(hourStr, 10);
+        const minutes = parseInt(minuteStr, 10);
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12;
+        return `${hours}:${minuteStr.padStart(2, '0')} ${ampm}`;
+    };
+
     return (
         <div className="p-6 max-w-4xl mx-auto">
             <h2 className="text-2xl font-bold mb-4">Your Bookings</h2>
@@ -84,7 +93,7 @@ function Bookings() {
                             <div>
                                 <p><strong>Turf:</strong> {booking.turf_id?.name || "Unknown Turf"}</p>
                                 <p><strong>Date:</strong> {new Date(booking.date).toLocaleDateString()}</p>
-                                <p><strong>Time:</strong> {booking.time_From} - {booking.time_To}</p>
+                                <p><strong>Time:</strong> {formatTime(booking.time_From)} - {formatTime(booking.time_To)}</p>
                             </div>
                             <button
                                 onClick={() => cancelBooking(booking._id)}
