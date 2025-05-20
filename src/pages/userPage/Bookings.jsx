@@ -72,12 +72,14 @@ function Bookings() {
         );
     }
     const formatTime = (isoString) => {
-        const date = new Date(isoString);
-        return date.toLocaleTimeString('en-IN', {
+        const utcDate = new Date(isoString);
+        const istOffset = 5.5 * 60 * 60 * 1000;
+        const istDate = new Date(utcDate.getTime() + istOffset);
+
+        return istDate.toLocaleTimeString('en-IN', {
             hour: 'numeric',
             minute: '2-digit',
             hour12: true,
-            timeZone: 'Asia/Kolkata',
         });
     };
 
