@@ -71,14 +71,13 @@ function Bookings() {
             </div>
         );
     }
-
-    const formatTime = (timeStr) => {
-        const [hourStr, minuteStr] = timeStr.split(':');
-        let hours = parseInt(hourStr, 10);
-        const minutes = parseInt(minuteStr, 10);
+    const formatTime = (isoString) => {
+        const date = new Date(isoString);
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
         const ampm = hours >= 12 ? 'PM' : 'AM';
-        hours = hours % 12 || 12;
-        return `${hours}:${minuteStr.padStart(2, '0')} ${ampm}`;
+        const hour12 = hours % 12 || 12;
+        return `${hour12}:${minutes.toString().padStart(2, '0')} ${ampm}`;
     };
 
     return (
