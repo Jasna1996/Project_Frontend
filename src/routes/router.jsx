@@ -16,6 +16,11 @@ import ManageLocations from "../pages/adminPage/ManageLocations";
 import ManageManagers from "../pages/adminPage/ManageManagers";
 import ManageTurfs from "../pages/adminPage/ManageTurfs";
 import ViewBookings from '../pages/adminPage/ViewBookings';
+import ManagerLayout from "../layouts/ManagerLayout";
+import ManagerDashboard from "../pages/managerPage/ManagerDashboard";
+import ManageTurf from "../pages/managerPage/ManageTurf";
+import ManagerBookings from "../pages/managerPage/ManagerBookings";
+import ManagerPayments from "../pages/managerPage/ManagerPayments";
 
 export const router = createBrowserRouter([
   {
@@ -81,7 +86,7 @@ export const router = createBrowserRouter([
         path: "",
         element: <HomePage />
       },
-      
+
       {
         path: "dashboard",
         element: <AdminDashboard />
@@ -101,6 +106,34 @@ export const router = createBrowserRouter([
       {
         path: "viewbookings",
         element: <ViewBookings />
+      }
+
+    ]
+  },
+  {
+    path: '/manager',
+    element: <ManagerLayout />,
+    errorElement: <h2>Error page</h2>,
+    children: [
+      {
+        path: "",
+        element: <ManagerDashboard />
+      },
+      {
+        path: "login",
+        element: <Login role="manager" />
+      },
+      {
+        path: "turfs",
+        element: <ManageTurf />
+      },
+      {
+        path: "bookings",
+        element: <ManagerBookings />
+      },
+      {
+        path: "payments",
+        element: <ManagerPayments />
       }
 
     ]
