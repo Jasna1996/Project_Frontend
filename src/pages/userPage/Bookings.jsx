@@ -71,15 +71,6 @@ function Bookings() {
             </div>
         );
     }
-    const formatTime = (isoString) => {
-        return new Date(isoString).toLocaleTimeString('en-IN', {
-            timeZone: 'Asia/Kolkata',
-            hour: 'numeric',
-            minute: '2-digit',
-            hour12: true
-        });
-    };
-
 
     return (
         <div className="p-6 max-w-4xl mx-auto">
@@ -92,8 +83,8 @@ function Bookings() {
                         <div key={booking._id} className="bg-white p-4 rounded shadow flex justify-between items-center">
                             <div>
                                 <p><strong>Turf:</strong> {booking.turf_id?.name || "Unknown Turf"}</p>
-                                <p><strong>Date:</strong> {new Date(booking.date).toLocaleDateString()}</p>
-                                <p><strong>Time:</strong> {formatTime(booking.time_From)} - {formatTime(booking.time_To)}</p>
+                                <p><strong>Date:</strong> {booking.formattedDate}</p>
+                                <p><strong>Time:</strong> {booking.formattedTimeFrom} - {booking.formattedTimeTo}</p>
                             </div>
                             <button
                                 onClick={() => cancelBooking(booking._id)}
