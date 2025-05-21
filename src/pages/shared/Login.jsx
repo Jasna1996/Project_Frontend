@@ -30,12 +30,22 @@ function Login({ role }) {
   const onSubmit = (e) => {
     e.preventDefault();
     userLogin(values, role).then((res) => {
+      const user = res.data.user;
+      const token = res.data.token;
+
       if (role == "admin") {
         localStorage.setItem("admin-token", res?.data?.token)
         toast.success(res?.data?.message || "Admin login Successfully!");
         navigate("/admin/dashboard")
 
-      } else {
+      } else if (user.role === "manager") {
+        localStorage.setItem("manager-token", token);
+        localStorage.setItem("userId", user._id);
+        toast.success(res?.data?.message || "Manager login successful!");
+        dispatch(saveUser(user));
+        navigate("/manager/dashboard");
+      }
+      else {
 
         localStorage.setItem("userToken", res.data.token);
         localStorage.setItem("userId", res.data.user._id);
@@ -56,6 +66,10 @@ function Login({ role }) {
       toast.error(errorMessage);
     })
   }
+
+  // Determine if we should show the signup link
+  const showSignupLink = role !== 'admin' && role !== 'manager';
+
   return (
     <div
       className="hero min-h-screen"
@@ -79,8 +93,22 @@ function Login({ role }) {
 
 
         <div className="bg-white bg-opacity-10 backdrop-blur-md p-6 md:p-10 rounded-xl shadow-2xl w-full max-w-sm md:max-w-md">
+
+          <p className="text-white text-base md:text-lg">
+            {role === 'admin' ? 'Admin portal - Manage the system' : role === 'manager' ?
+              'Manager portal - Manage your location' :
+              'Book your favorite turfs effortlessly! Login to continue and enjoy an amazing experience.'}
+          </p>
+        </div>
+        <div className="bg-white bg-opacity-10 backdrop-blur-md p-6 md:p-10 rounded-xl shadow-2xl w-full max-w-sm md:max-w-md">
+
           <h1 className="text-3xl md:text-4xl font-bold mb-6 text-white">
-            {role === 'admin' ? 'Admin Login Here!' : 'Login Here!'}</h1>
+            {role === 'admin'
+              ? 'Admin Login'
+              : role === 'manager'
+                ? 'Manager Login'
+                : 'User Login'}
+          </h1>
           <form className="flex flex-col gap-4">
             <input
               type="email"
@@ -105,9 +133,12 @@ function Login({ role }) {
             >
               LogIn
             </button>
-            <p className="text-sm mt-2 text-white">
-              Don’t have an account? <span className="underline cursor-pointer" onClick={() => navigate("/signup")}>Register</span>
-            </p>
+            {showSignupLink && (
+              <p className="text-sm mt-2 text-white">
+                Don’t have an account?{ } <span className="underline cursor-pointer"
+                  onClick={() => navigate("/signup")}>Register</span>
+              </p>
+            )}
           </form>
         </div>
       </div>
