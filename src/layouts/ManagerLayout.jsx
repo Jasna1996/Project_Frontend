@@ -15,17 +15,28 @@ function ManagerLayout() {
 
     const handleLogout = async () => {
         try {
+            localStorage.removeItem("manager-token");
+            localStorage.removeItem("userId");
             await userLogout();
             await persistor.purge();
             dispatch(clearUser());
             toast.success("Logged out successfully");
-            navigate("/manager/login");
+            navigate('/manager/login', { replace: true });
         } catch (error) {
             console.log(error);
             toast.error("Logout failed");
         }
     };
 
+    const handleLoginRedirect = () => {
+        try {
+
+            navigate('login', { replace: true });
+            console.log('Navigation called successfully');
+        } catch (error) {
+            console.error('Navigation error:', error);
+        }
+    };
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
     if (!isLoggedIn) {
@@ -34,9 +45,16 @@ function ManagerLayout() {
                 <div className="text-center">
                     <h2 className="text-2xl font-bold mb-4 text-green-900">Manager Portal</h2>
                     <p className="mb-4 text-gray-700">Please login to access the manager dashboard</p>
-                    <NavLink to="/manager/login" className="bg-lime-400 hover:bg-lime-500 text-black py-2 px-4 rounded">
+                    {/* <NavLink to="/manager/login" className="bg-lime-400 hover:bg-lime-500 text-black py-2 px-4 rounded">
                         Go to Login
-                    </NavLink>
+                    </NavLink> */
+                    }
+
+                    <button
+                        onClick={handleLoginRedirect}
+
+                        className="bg-lime-400 hover:bg-lime-500 text-black py-2 px-4 rounded ml-4"
+                    >Go to Login</button>
                 </div>
             </div>
         );

@@ -116,7 +116,7 @@ export const router = createBrowserRouter([
     errorElement: <h2>Error page</h2>,
     children: [
       {
-        path: "",
+        index: true,
         element: <ManagerDashboard />
       },
       {
