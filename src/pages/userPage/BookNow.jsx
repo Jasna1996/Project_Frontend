@@ -32,13 +32,22 @@ function BookNow() {
     }
 
     try {
+
+      const formatTimeForBackend = (timeStr) => {
+        const timeRegex = /^(0?[1-9]|1[0-2]):[0-5][0-9] (AM|PM)$/i;
+        if (!timeRegex.test(timeStr)) {
+          throw new Error(`Invalid time format: ${timeStr}`);
+        }
+        return timeStr;
+      }
+
       const bookingData = {
         email,
         turfId,
         turfName,
         date,
-        time_From: timeFrom,
-        time_To: timeTo,
+        time_From: formatTimeForBackend(timeFrom),
+        time_To: formatTimeForBackend(timeTo),
         priceEstimate
 
       };
