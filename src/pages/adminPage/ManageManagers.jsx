@@ -26,7 +26,12 @@ function ManageManagers() {
         try {
             const response = await GetAllManagers();
             if (response.data.success) {
-                setManagers(response.data.data);
+                const data = response.data.data;
+                setManagers(data);
+                if (!data || data.length === 0) {
+                    toast.info("No managers found in the system");
+                }
+
             } else {
                 toast.error("Failed to fetch managers");
             }
@@ -249,6 +254,10 @@ function ManageManagers() {
             {showModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white p-6 rounded shadow-lg w-full max-w-md">
+                        <button
+                            className="absolute top-2 right-2 text-gray-600 hover:text-red-600 text-xl"
+                            onClick={() => setShowModal(false)}>&times;
+                        </button>
                         <h3 className="text-xl font-bold mb-4">Add New Manager</h3>
 
                         <div className="space-y-3">
@@ -278,6 +287,13 @@ function ManageManagers() {
                                 placeholder="Password"
                                 value={newManager.password}
                                 onChange={(e) => setNewManager({ ...newManager, password: e.target.value })}
+                                className="w-full border border-gray-300 px-3 py-2 rounded"
+                            />
+                            <input
+                                type="password"
+                                placeholder="ConfirmPassword"
+                                value={newManager.confirmPassword}
+                                onChange={(e) => setNewManager({ ...newManager, confirmPassword: e.target.value })}
                                 className="w-full border border-gray-300 px-3 py-2 rounded"
                             />
                             <input
