@@ -86,20 +86,14 @@ function Login({ role }) {
             Welcome to <span className="text-lime-300">PlayNest</span> 🌟
           </h2>
           <p className="text-white text-base md:text-lg">
-            Book your favorite turfs effortlessly! Login to continue and enjoy an amazing experience.
+            {role === 'admin'
+              ? 'Admin portal - Manage the system'
+              : role === 'manager'
+                ? 'Manager portal - Manage your location'
+                : 'Book your favorite turfs effortlessly!'}
           </p>
         </div>
 
-
-
-        <div className="bg-white bg-opacity-10 backdrop-blur-md p-6 md:p-10 rounded-xl shadow-2xl w-full max-w-sm md:max-w-md">
-
-          <p className="text-white text-base md:text-lg">
-            {role === 'admin' ? 'Admin portal - Manage the system' : role === 'manager' ?
-              'Manager portal - Manage your location' :
-              'Book your favorite turfs effortlessly! Login to continue and enjoy an amazing experience.'}
-          </p>
-        </div>
         <div className="bg-white bg-opacity-10 backdrop-blur-md p-6 md:p-10 rounded-xl shadow-2xl w-full max-w-sm md:max-w-md">
 
           <h1 className="text-3xl md:text-4xl font-bold mb-6 text-white">
