@@ -3,14 +3,19 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { getManagerTurf } from '../../services/managerServices';
 
+import { useDispatch } from 'react-redux';
+
 const ManageTurf = () => {
     const [turfs, setTurfs] = useState([]);
     const [editingTurf, setEditingTurf] = useState(null);
     const [formData, setFormData] = useState({
         pricePerHour: { football: "", cricket: "" },
-        description: ""
+        description: "",
+        image: null
     });
-
+    const [previewImage, setPreviewImage] = useState(null);
+    const [isSaving, setIsSaving] = useState(false);
+    const dispatch = useDispatch();
     useEffect(() => {
         fetchTurfs()
     }, [])
@@ -20,7 +25,7 @@ const ManageTurf = () => {
             const response = await getManagerTurf();
             setTurfs(response.data.data);
         } catch (error) {
-            toast.error("Failed to fetch turfs");
+            toast.error("Failed to fetch turf");
         }
     }
 
@@ -28,8 +33,10 @@ const ManageTurf = () => {
         setEditingTurf(turf._id);
         setFormData({
             pricePerHour: turf.pricePerHour || { football: " ", cricket: " " },
-            description: turf.description || " "
+            description: turf.description || " ",
+            image: null
         });
+        setPreviewImage(turf.image?.url || null);
     };
 
     const handleChange = (e) => {
@@ -43,28 +50,64 @@ const ManageTurf = () => {
             setFormData(prev => ({ ...prev, [name]: value }));
         }
     };
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setFormData(prev => ({ ...prev, image: file }));
+            setPreviewImage(URL.createObjectURL(file));
+        }
+    };
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsSaving(true);
+        const form = new FormData();
+        form.append('football', formData.pricePerHour.football);
+        form.append('cricket', formData.pricePerHour.cricket);
+        form.append('description', formData.description);
+        if (formData.image) form.append('image', formData.image);
+
         try {
-            await updateTurf(editingTurf, formData);
+            await dispatch(updateTurf(editingTurf, form));
             toast.success("Turf updated successfully");
             setEditingTurf(null);
+            setPreviewImage(null);
             fetchTurfs();
         } catch (error) {
             toast.error("Failed to update turf");
         }
+        finally {
+            setIsSaving(false);
+        }
     };
+
 
     return (
         <div>
             <h1 className="text-2xl font-bold mb-6">My Turfs</h1>
-
             <div className="grid grid-cols-1 gap-6">
-                {turfs.map(turf => (
+                {turfs.map((turf) => (
                     <div key={turf._id} className="bg-white p-6 rounded-lg shadow">
                         {editingTurf === turf._id ? (
                             <form onSubmit={handleSubmit}>
                                 <h3 className="text-xl font-semibold mb-4">Edit {turf.name}</h3>
+
+                                {/* Image Preview */}
+                                {previewImage && (
+                                    <img
+                                        src={previewImage}
+                                        alt="Preview"
+                                        className="w-full h-60 object-cover rounded mb-4"
+                                    />
+                                )}
+                                <div className="mb-4">
+                                    <label className="block mb-2">Change Turf Image</label>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleImageChange}
+                                        className="w-full"
+                                    />
+                                </div>
 
                                 <div className="grid grid-cols-2 gap-4 mb-4">
                                     <div>
@@ -104,12 +147,16 @@ const ManageTurf = () => {
                                     <button
                                         type="submit"
                                         className="px-4 py-2 bg-blue-600 text-white rounded"
+                                        disabled={isSaving}
                                     >
-                                        Save Changes
+                                        {isSaving ? 'Saving...' : 'Save Changes'}
                                     </button>
                                     <button
                                         type="button"
-                                        onClick={() => setEditingTurf(null)}
+                                        onClick={() => {
+                                            setEditingTurf(null);
+                                            setPreviewImage(null);
+                                        }}
                                         className="px-4 py-2 bg-gray-500 text-white rounded"
                                     >
                                         Cancel
@@ -128,24 +175,26 @@ const ManageTurf = () => {
                                     </button>
                                 </div>
 
+                                <img
+                                    src={turf.image?.url}
+                                    alt={turf.name}
+                                    className="w-full h-60 object-cover rounded mb-4"
+                                />
+
                                 <div className="grid grid-cols-2 gap-4 mb-4">
-                                    <div>
-                                        <p className="text-gray-600">Football: ₹{turf.pricePerHour?.football || 'N/A'}</p>
-                                    </div>
-                                    <div>
-                                        <p className="text-gray-600">Cricket: ₹{turf.pricePerHour?.cricket || 'N/A'}</p>
-                                    </div>
+                                    <p className="text-gray-600">Football: ₹{turf.pricePerHour?.football || 'N/A'}</p>
+                                    <p className="text-gray-600">Cricket: ₹{turf.pricePerHour?.cricket || 'N/A'}</p>
                                 </div>
 
-                                <p className="text-gray-700">{turf.description}</p>
+                                <p className="text-gray-700 mb-2">{turf.description}</p>
+                                <p className="text-gray-500 text-sm italic">Location: {turf.location_id?.name}</p>
                             </>
                         )}
                     </div>
                 ))}
             </div>
         </div>
-
-    )
+    );
 }
 
 export default ManageTurf

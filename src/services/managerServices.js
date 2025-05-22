@@ -16,3 +16,4 @@ export const getManagerBookings = () => {
 export const getManagerPayments = () => {
     return axiosInstance.get("/manager/payments")
 }
+

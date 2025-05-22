@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { FaHome, FaCalendarAlt, FaSignOutAlt, FaBars, FaTimes } from 'react-icons/fa';
+import { FaHome, FaCalendarAlt, FaSignOutAlt, FaBars, FaTimes, FaFutbol, FaCreditCard, FaKey } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { userLogout } from '../services/userServices';
 import { persistor } from '../redux/store';
@@ -20,7 +20,7 @@ function ManagerLayout() {
         if (token && !isLoggedIn) {
             dispatch(saveUser({ token, user: null }))
         }
-    },[dispatch,isLoggedIn])
+    }, [dispatch, isLoggedIn])
 
     const handleLogout = async () => {
         try {
@@ -36,7 +36,14 @@ function ManagerLayout() {
             toast.error("Logout failed");
         }
     };
+    const handleChangePassword = async () => {
+        try {
 
+        } catch (error) {
+            console.log(error);
+            toast.error("Pasword change failed");
+        }
+    }
 
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
@@ -87,7 +94,7 @@ function ManagerLayout() {
                             `flex items-center p-3 rounded ${isActive ? "bg-green-800" : "hover:bg-green-800"}`
                         }
                         onClick={() => setSidebarOpen(false)} >
-                        <FaCalendarAlt className="mr-3" /> Turf Details
+                        <FaFutbol className="mr-3" /> Turf Details
                     </NavLink>
                     <NavLink to="/manager/bookings"
                         className={({ isActive }) =>
@@ -99,9 +106,17 @@ function ManagerLayout() {
                         className={({ isActive }) =>
                             `flex items-center p-3 rounded ${isActive ? "bg-green-800" : "hover:bg-green-800"}`
                         } onClick={() => setSidebarOpen(false)} >
-                        <FaCalendarAlt className="mr-3" /> Payments
+                        <FaCreditCard className="mr-3" /> Payments
                     </NavLink>
                 </nav>
+                <div className="p-4 border-t border-green-700">
+                    <button
+                        onClick={handleChangePassword}
+                        className="flex items-center w-full p-3 rounded hover:bg-green-800"
+                    >
+                        <FaKey className="mr-3" /> Change Password
+                    </button>
+                </div>
                 <div className="p-4 border-t border-green-700">
                     <button
                         onClick={handleLogout}

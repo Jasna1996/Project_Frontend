@@ -21,6 +21,7 @@ import ManagerDashboard from "../pages/managerPage/ManagerDashboard";
 import ManageTurf from "../pages/managerPage/ManageTurf";
 import ManagerBookings from "../pages/managerPage/ManagerBookings";
 import ManagerPayments from "../pages/managerPage/ManagerPayments";
+import ChangePassword from "../pages/shared/ChangePassword";
 
 
 export const router = createBrowserRouter([
@@ -70,6 +71,10 @@ export const router = createBrowserRouter([
         path: 'payment/success',
         element: <PaymentSuccess />
       },
+      {
+        path: 'changepassword',
+        element: <ChangePassword />
+      }
 
     ]
   },
@@ -107,6 +112,9 @@ export const router = createBrowserRouter([
       {
         path: "viewbookings",
         element: <ViewBookings />
+      },
+      {
+        path: "changepassword", element: <ChangePassword role="admin" />
       }
 
     ]
@@ -121,7 +129,8 @@ export const router = createBrowserRouter([
       { path: "dashboard", element: <ManagerDashboard /> },
       { path: "turfs", element: <ManageTurf /> },
       { path: "bookings", element: <ManagerBookings /> },
-      { path: "payments", element: <ManagerPayments /> }
+      { path: "payments", element: <ManagerPayments /> },
+      { path: "changepassword", element: <ChangePassword role="manager" /> }
     ]
   }
 

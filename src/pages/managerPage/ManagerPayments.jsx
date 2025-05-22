@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { getManagerPayments } from '../../services/managerServices';
+import { toast } from 'react-toastify';
 
 const ManagerPayments = () => {
 
@@ -62,7 +63,7 @@ const ManagerPayments = () => {
                                     </td>
                                     <td className="py-3 px-4">
                                         <span className={`px-2 py-1 rounded-full text-xs ${payment.status === 'Paid' ? 'bg-green-100 text-green-800' :
-                                                'bg-yellow-100 text-yellow-800'
+                                            'bg-yellow-100 text-yellow-800'
                                             }`}>
                                             {payment.status}
                                         </span>
