@@ -180,13 +180,13 @@ function ManageManagers() {
                 {/* Left Form Panel */}
                 <div className="lg:w-1/3 w-full bg-white p-4 rounded-lg shadow">
                     <div className="mb-4">
-                        <label className="block mb-1 font-semibold">Select User</label>
+                        <label className="block mb-1 font-semibold">Select Manager</label>
                         <select
                             className="w-full border border-gray-300 rounded px-3 py-2"
                             value={selectedUser}
                             onChange={(e) => setSelectedUser(e.target.value)}
                         >
-                            <option value="">-- Select User --</option>
+                            <option value="">-- Select Manager --</option>
                             {users.map((user) => (
                                 <option key={user._id} value={user.email}>
                                     {user.email}
