@@ -35,6 +35,6 @@ export const getAllBookings = () => {
 export const getAllUsers = () => {
     return axiosInstance.get("/admin/GetAllUsers");
 }
-export const addManagerUser = () => {
-    return axiosInstance.post('/admin/AddManagerUser');
+export const addManagerUser = (data) => {
+    return axiosInstance.post('/admin/AddManagerUser', data);
 }

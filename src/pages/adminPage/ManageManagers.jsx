@@ -138,6 +138,11 @@ function ManageManagers() {
         }
 
         try {
+            const { name, email, phone, password, confirmPassword } = newManager;
+            if (!name || !email || !phone || !password || !confirmPassword) {
+                toast.error("Please fill in all fields");
+                return;
+            }
             const response = await addManagerUser(newManager)
             if (response.data.success) {
                 toast.success("Manager added successfully");
@@ -253,17 +258,21 @@ function ManageManagers() {
             {/* Modal */}
             {showModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white p-6 rounded shadow-lg w-full max-w-md">
+                    <div className="bg-white p-6 rounded shadow-lg w-full max-w-md relative">
                         <button
-                            className="absolute top-2 right-2 text-gray-600 hover:text-red-600 text-xl"
-                            onClick={() => setShowModal(false)}>&times;
+                            onClick={() => setShowModal(false)}
+                            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+                        >
+                            &times;
                         </button>
+
                         <h3 className="text-xl font-bold mb-4">Add New Manager</h3>
 
                         <div className="space-y-3">
                             <input
                                 type="text"
-                                placeholder="Name"
+                                placeholder="FullName"
+                                name='name'
                                 value={newManager.name}
                                 onChange={(e) => setNewManager({ ...newManager, name: e.target.value })}
                                 className="w-full border border-gray-300 px-3 py-2 rounded"
@@ -271,13 +280,15 @@ function ManageManagers() {
                             <input
                                 type="email"
                                 placeholder="Email"
+                                name='email'
                                 value={newManager.email}
                                 onChange={(e) => setNewManager({ ...newManager, email: e.target.value })}
                                 className="w-full border border-gray-300 px-3 py-2 rounded"
                             />
                             <input
-                                type="text"
+                                type="tel"
                                 placeholder="Phone"
+                                name='phone'
                                 value={newManager.phone}
                                 onChange={(e) => setNewManager({ ...newManager, phone: e.target.value })}
                                 className="w-full border border-gray-300 px-3 py-2 rounded"
@@ -285,6 +296,7 @@ function ManageManagers() {
                             <input
                                 type="password"
                                 placeholder="Password"
+                                name='password'
                                 value={newManager.password}
                                 onChange={(e) => setNewManager({ ...newManager, password: e.target.value })}
                                 className="w-full border border-gray-300 px-3 py-2 rounded"
@@ -292,6 +304,7 @@ function ManageManagers() {
                             <input
                                 type="password"
                                 placeholder="ConfirmPassword"
+                                name='confirmPassword'
                                 value={newManager.confirmPassword}
                                 onChange={(e) => setNewManager({ ...newManager, confirmPassword: e.target.value })}
                                 className="w-full border border-gray-300 px-3 py-2 rounded"
@@ -299,6 +312,7 @@ function ManageManagers() {
                             <input
                                 type="text"
                                 value="manager"
+                                name='manager'
                                 readOnly
                                 className="w-full border border-gray-300 px-3 py-2 rounded bg-gray-100"
                             />
