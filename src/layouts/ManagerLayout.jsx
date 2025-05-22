@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { FaHome, FaCalendarAlt, FaSignOutAlt, FaBars, FaTimes } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { userLogout } from '../services/userServices';
@@ -8,8 +8,10 @@ import { persistor } from '../redux/store';
 import { clearUser } from '../redux/features/userSlice';
 
 function ManagerLayout() {
+    const location = useLocation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const isLoginPage = location.pathname === '/manager/login';
     const { isLoggedIn } = useSelector((state) => state.user);
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -28,30 +30,17 @@ function ManagerLayout() {
         }
     };
 
-    const handleLoginRedirect = () => {
-        try {
 
-            navigate('login', { replace: true });
-            console.log('Navigation called successfully');
-        } catch (error) {
-            console.error('Navigation error:', error);
-        }
-    };
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
-    if (!isLoggedIn) {
+    if (!isLoggedIn && !isLoginPage) {
         return (
             <div className="flex items-center justify-center h-screen">
                 <div className="text-center">
                     <h2 className="text-2xl font-bold mb-4 text-green-900">Manager Portal</h2>
                     <p className="mb-4 text-gray-700">Please login to access the manager dashboard</p>
-                    {/* <NavLink to="/manager/login" className="bg-lime-400 hover:bg-lime-500 text-black py-2 px-4 rounded">
-                        Go to Login
-                    </NavLink> */
-                    }
-
                     <button
-                        onClick={handleLoginRedirect}
+                        onClick={() => navigate('/manager/login', { replace: true })}
 
                         className="bg-lime-400 hover:bg-lime-500 text-black py-2 px-4 rounded ml-4"
                     >Go to Login</button>

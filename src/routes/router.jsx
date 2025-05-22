@@ -22,6 +22,7 @@ import ManageTurf from "../pages/managerPage/ManageTurf";
 import ManagerBookings from "../pages/managerPage/ManagerBookings";
 import ManagerPayments from "../pages/managerPage/ManagerPayments";
 
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -111,31 +112,16 @@ export const router = createBrowserRouter([
     ]
   },
   {
-    path: '/manager',
+    path: "/manager",
     element: <ManagerLayout />,
     errorElement: <h2>Error page</h2>,
     children: [
-      {
-        index: true,
-        element: <ManagerDashboard />
-      },
-      {
-        path: "login",
-        element: <Login role="manager" />
-      },
-      {
-        path: "turfs",
-        element: <ManageTurf />
-      },
-      {
-        path: "bookings",
-        element: <ManagerBookings />
-      },
-      {
-        path: "payments",
-        element: <ManagerPayments />
-      }
-
+      { path: "login", element: <Login role="manager" /> },
+      { path: "", element: <ManagerDashboard /> },
+      { path: "dashboard", element: <ManagerDashboard /> },
+      { path: "turfs", element: <ManageTurf /> },
+      { path: "bookings", element: <ManagerBookings /> },
+      { path: "payments", element: <ManagerPayments /> }
     ]
   }
 
