@@ -88,7 +88,7 @@ function ManageManagers() {
 
     const handleAssignManager = async () => {
         if (!selectedUser || !selectedLocation) {
-            toast.error("Please select both user and turf");
+            toast.info("Please select both user and turf");
             return;
         }
 
@@ -103,7 +103,7 @@ function ManageManagers() {
             }
             else {
                 await addManager(managerData);
-                toast.success("Manager added successfully");
+                toast.success("Manager assigned successfully");
             }
 
             fetchManagers();
@@ -140,24 +140,26 @@ function ManageManagers() {
         try {
             const { name, email, phone, password, confirmPassword } = newManager;
             if (!name || !email || !phone || !password || !confirmPassword) {
-                toast.error("Please fill in all fields");
+                toast.warning("Please fill in all fields");
                 return;
             }
             const response = await addManagerUser(newManager)
             if (response.data.success) {
+                console.log("Inside success block:", response.data);
                 toast.success("Manager added successfully");
-                resetManagerForm();
-                console.log("Closing modal...");
                 setShowModal(false);
-                setNewManager({ name: '', email: '', phone: '', password: '', confirmPassword: '', role: 'manager' });
+                resetManagerForm();
                 await fetchManagers();
-                await fetchUsers();
+
+                setNewManager({ name: '', email: '', phone: '', password: '', confirmPassword: '', role: 'manager' });
+
             } else {
                 toast.error(response.data.message || "Failed to add manager");
             }
         } catch (error) {
-            console.error("Error saving manager", error);
-            toast.error("Error saving manager");
+            const message =
+                error.response?.data?.message || "Something went wrong while saving manager";
+            toast.error(message);
         }
     }
     const resetManagerForm = () => {
