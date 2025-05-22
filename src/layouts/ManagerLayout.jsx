@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { FaHome, FaCalendarAlt, FaSignOutAlt, FaBars, FaTimes } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { userLogout } from '../services/userServices';
 import { persistor } from '../redux/store';
-import { clearUser } from '../redux/features/userSlice';
+import { clearUser, saveUser } from '../redux/features/userSlice';
 
 function ManagerLayout() {
     const location = useLocation();
@@ -14,6 +14,13 @@ function ManagerLayout() {
     const isLoginPage = location.pathname === '/manager/login';
     const { isLoggedIn } = useSelector((state) => state.user);
     const [sidebarOpen, setSidebarOpen] = useState(false);
+
+    useEffect(() => {
+        const token = localStorage.getItem('manager-token');
+        if (token && !isLoggedIn) {
+            dispatch(saveUser({ token, user: null }))
+        }
+    },[dispatch,isLoggedIn])
 
     const handleLogout = async () => {
         try {

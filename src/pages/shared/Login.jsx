@@ -42,7 +42,7 @@ function Login({ role }) {
         localStorage.setItem("manager-token", token);
         localStorage.setItem("userId", user._id);
         toast.success(res?.data?.message || "Manager login successful!");
-        dispatch(saveUser(user));
+        dispatch(saveUser({ user, token }));
         navigate("/manager", { replace: true });
       }
       else {
