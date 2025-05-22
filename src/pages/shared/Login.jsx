@@ -43,7 +43,7 @@ function Login({ role }) {
         localStorage.setItem("userId", user._id);
         toast.success(res?.data?.message || "Manager login successful!");
         dispatch(saveUser(user));
-        navigate("/manager");
+        navigate("/manager", { replace: true });
       }
       else {
 

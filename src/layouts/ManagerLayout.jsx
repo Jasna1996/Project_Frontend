@@ -48,6 +48,14 @@ function ManagerLayout() {
             </div>
         );
     }
+    if (isLoginPage) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+                <Outlet />
+            </div>
+        );
+    }
+
 
     return (
         <div className="flex min-h-screen relative">
@@ -61,23 +69,30 @@ function ManagerLayout() {
                     </button>
                 </div>
                 <nav className="flex flex-col p-4 space-y-2">
-                    <NavLink
-                        to="/manager"
+                    <NavLink to="/manager"
                         className={({ isActive }) =>
                             `flex items-center p-3 rounded ${isActive ? "bg-green-800" : "hover:bg-green-800"}`
-                        }
-                        onClick={() => setSidebarOpen(false)}
-                    >
+                        } onClick={() => setSidebarOpen(false)} >
                         <FaHome className="mr-3" /> Dashboard
                     </NavLink>
-                    <NavLink
-                        to="/manager/bookings"
+                    <NavLink to="/manager/turfs"
                         className={({ isActive }) =>
                             `flex items-center p-3 rounded ${isActive ? "bg-green-800" : "hover:bg-green-800"}`
                         }
-                        onClick={() => setSidebarOpen(false)}
-                    >
+                        onClick={() => setSidebarOpen(false)} >
+                        <FaCalendarAlt className="mr-3" /> Turf Details
+                    </NavLink>
+                    <NavLink to="/manager/bookings"
+                        className={({ isActive }) =>
+                            `flex items-center p-3 rounded ${isActive ? "bg-green-800" : "hover:bg-green-800"}`
+                        } onClick={() => setSidebarOpen(false)} >
                         <FaCalendarAlt className="mr-3" /> Bookings
+                    </NavLink>
+                    <NavLink to="/manager/payments"
+                        className={({ isActive }) =>
+                            `flex items-center p-3 rounded ${isActive ? "bg-green-800" : "hover:bg-green-800"}`
+                        } onClick={() => setSidebarOpen(false)} >
+                        <FaCalendarAlt className="mr-3" /> Payments
                     </NavLink>
                 </nav>
                 <div className="p-4 border-t border-green-700">
