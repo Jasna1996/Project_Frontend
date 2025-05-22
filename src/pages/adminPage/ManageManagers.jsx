@@ -145,7 +145,7 @@ function ManageManagers() {
             }
             const response = await addManagerUser(newManager)
             if (response.data.success) {
-                toast.success("Manager added successfully", { style: { background: "#4caf50", color: "#fff", } });
+                toast.success("Manager added successfully");
             } else {
                 toast.error(response.data.message || "Failed to add manager");
             }
