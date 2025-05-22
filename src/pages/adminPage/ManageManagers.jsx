@@ -146,9 +146,11 @@ function ManageManagers() {
             const response = await addManagerUser(newManager)
             if (response.data.success) {
                 toast.success("Manager added successfully");
+                resetManagerForm();
+                console.log("Closing modal...");
                 setShowModal(false);
                 setNewManager({ name: '', email: '', phone: '', password: '', confirmPassword: '', role: 'manager' });
-                fetchManagers();
+                await fetchManagers();
                 await fetchUsers();
             } else {
                 toast.error(response.data.message || "Failed to add manager");
@@ -257,7 +259,7 @@ function ManageManagers() {
 
             {/* Modal */}
             {showModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div key={showModal ? "open" : "closed"} className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white p-6 rounded shadow-lg w-full max-w-md relative">
                         <button
                             onClick={() => setShowModal(false)}
