@@ -110,12 +110,13 @@ function ManagerLayout() {
                     </NavLink>
                 </nav>
                 <div className="p-4 border-t border-green-700">
-                    <button
-                        onClick={handleChangePassword}
+                    <NavLink
+                        to="/manager/changepassword"
                         className="flex items-center w-full p-3 rounded hover:bg-green-800"
+                        onClick={() => setSidebarOpen(false)}
                     >
                         <FaKey className="mr-3" /> Change Password
-                    </button>
+                    </NavLink>
                 </div>
                 <div className="p-4 border-t border-green-700">
                     <button
