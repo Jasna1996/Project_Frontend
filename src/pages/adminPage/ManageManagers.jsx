@@ -145,17 +145,16 @@ function ManageManagers() {
             }
             const response = await addManagerUser(newManager)
             if (response.data.success) {
-                console.log("Inside success block:", response.data);
-                toast.success("Manager added successfully");
-                setShowModal(false);
-                resetManagerForm();
-                await fetchManagers();
-
-                setNewManager({ name: '', email: '', phone: '', password: '', confirmPassword: '', role: 'manager' });
-
+                toast.success("Manager added successfully", { style: { background: "#4caf50", color: "#fff", } });
             } else {
                 toast.error(response.data.message || "Failed to add manager");
             }
+            setShowModal(false);
+            resetManagerForm();
+            await fetchManagers();
+
+            setNewManager({ name: '', email: '', phone: '', password: '', confirmPassword: '', role: 'manager' });
+
         } catch (error) {
             const message =
                 error.response?.data?.message || "Something went wrong while saving manager";
