@@ -83,17 +83,25 @@ function BookNow() {
         const result = await stripe.redirectToCheckout({ sessionId });
         if (result.error) {
           console.log(result.error.message)
+          toast.error("Payment failed. Please try again.");
         }
 
       }
       else {
         console.log("stripe failed to load")
+        toast.error("Stripe payment could not be initialized.");
       }
 
     } catch (error) {
       console.error(error);
       const status = error?.response?.status;
-
+      const message = error?.response?.data?.message;
+      if (status === 404 && message === "User not found") {
+        toast.error("User not found. Please log in and try again.");
+        navigate("/login");
+        return;
+      }
+      toast.error(message || "An error occurred while booking.");
     }
   };
 
