@@ -36,14 +36,7 @@ function ManagerLayout() {
             toast.error("Logout failed");
         }
     };
-    const handleChangePassword = async () => {
-        try {
 
-        } catch (error) {
-            console.log(error);
-            toast.error("Pasword change failed");
-        }
-    }
 
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 

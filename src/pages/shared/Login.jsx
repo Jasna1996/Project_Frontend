@@ -39,13 +39,13 @@ function Login({ role }) {
         navigate("/admin/dashboard")
 
       }
-      // else if (user.role === "manager") {
-      //   localStorage.setItem("manager-token", token);
-      //   localStorage.setItem("userId", user._id);
-      //   toast.success(res?.data?.message || "Manager login successful!");
-      //   dispatch(saveUser({ user, token }));
-      //   navigate("/manager", { replace: true });
-      // }
+      else if (user.role === "manager") {
+        localStorage.setItem("manager-token", res.data.token);
+        localStorage.setItem("userId", res.data.user._id);
+        toast.success(res?.data?.message || "Manager login successful!");
+        dispatch(saveUser(res.data.user));
+        navigate("/manager", { replace: true });
+      }
       else {
 
         localStorage.setItem("userToken", res.data.token);
