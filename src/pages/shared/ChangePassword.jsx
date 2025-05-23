@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
-import { changePassword } from '../../services/passwordService';
+import { changePassword as changePasswordService } from '../../services/passwordService';
 
 
 function ChangePassword({ role }) {
+
 
     const navigate = useNavigate();
     const [values, setValues] = useState({
@@ -17,19 +18,20 @@ function ChangePassword({ role }) {
     const onSubmit = async (e) => {
         e.preventDefault();
         if (values.newPassword !== values.confirmPassword) {
-            return toast.error("New password and confirm password do not match!");
+            toast.error("New password and confirm password do not match!");
+            return
         }
 
         setLoading(true);
         try {
-            const response = await changePassword(
-                {
-                    oldPassword: values.oldPassword,
-                    newPassword: values.newPassword,
-                    confirmPassword: values.confirmPassword,
-                },
-                role
-            )
+            const payload = {
+                oldPassword: values.oldPassword,
+                newPassword: values.newPassword,
+                confirmPassword: values.confirmPassword,
+            };
+            const response = await changePasswordService(payload, role)
+
+
             toast.success(response.data.message || "Password changed successfully!");
             setValues({ oldPassword: "", newPassword: "", confirmPassword: "" });
 
@@ -39,6 +41,7 @@ function ChangePassword({ role }) {
         } finally {
             setLoading(false);
         }
+
     }
 
     return (
