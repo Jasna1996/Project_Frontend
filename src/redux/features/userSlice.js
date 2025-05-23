@@ -13,7 +13,7 @@ export const userSlice = createSlice({
     saveUser: (state, action) => {
       state.user = action.payload.user || null
       state.token = action.payload.token || null
-      state.isLoggedIn = !!action.payload.token
+      state.isLoggedIn = action.payload?.token?.length
     },
     clearUser: (state) => {
       state.user = {}

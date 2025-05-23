@@ -12,7 +12,7 @@ function ManagerLayout() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const isLoginPage = location.pathname === '/manager/login';
-    const { isLoggedInManager } = useSelector((state) => state.user);
+    const { isLoggedInManager } = useSelector((state) => state.isLoggedIn);
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     useEffect(() => {
