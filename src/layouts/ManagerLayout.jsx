@@ -12,15 +12,15 @@ function ManagerLayout() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const isLoginPage = location.pathname === '/manager/login';
-    const { isLoggedIn } = useSelector((state) => state.user);
+    const { isLoggedInManager } = useSelector((state) => state.user);
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem('manager-token');
-        if (token && !isLoggedIn) {
+        if (token && !isLoggedInManager) {
             dispatch(saveUser({ token, user: null }))
         }
-    }, [dispatch, isLoggedIn])
+    }, [dispatch, isLoggedInManager])
 
     const handleLogout = async () => {
         try {
@@ -47,7 +47,7 @@ function ManagerLayout() {
 
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
-    if (!isLoggedIn && !isLoginPage) {
+    if (!isLoggedInManager && !isLoginPage) {
         return (
             <div className="flex items-center justify-center h-screen">
                 <div className="text-center">
