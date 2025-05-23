@@ -36,6 +36,7 @@ function Login({ role }) {
       if (role == "admin") {
         localStorage.setItem("admin-token", res?.data?.token)
         toast.success(res?.data?.message || "Admin login Successfully!");
+        dispatch(saveUser({ user, token }));
         navigate("/admin/dashboard")
 
       } else if (user.role === "manager") {
@@ -50,7 +51,7 @@ function Login({ role }) {
         localStorage.setItem("userToken", res.data.token);
         localStorage.setItem("userId", res.data.user._id);
         toast.success(res?.data?.message || "User login Successfully!")
-        dispatch(saveUser(res.data.user));
+        dispatch(saveUser(user, token));
         // Redirect logic with booking data
         if (from === '/booknow' && bookingData) {
           navigate(from, { state: bookingData });
