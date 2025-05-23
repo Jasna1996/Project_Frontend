@@ -22,7 +22,7 @@ function Header() {
       console.log(error)
     }
   }
-  const isLoggedIn = userData && Object.keys(userData).length > 0;
+  const isLoggedIn = userData?.user && Object.keys(userData.user).length > 0;
 
   return (
     <div className="navbar bg-gradient-to-r from-green-600 via-green-400 to-lime-300  shadow-md px-4 text-white ">
