@@ -32,26 +32,26 @@ function Login({ role }) {
     userLogin(values, role).then((res) => {
       const user = res.data.user;
       const token = res.data.token;
-
+      localStorage.setItem("userId", user._id);
+      dispatch(saveUser(res.data.user));
       if (role == "admin") {
         localStorage.setItem("admin-token", res?.data?.token)
         toast.success(res?.data?.message || "Admin login Successfully!");
-        dispatch(saveUser({ user, token }));
+        // dispatch(saveUser({ user, token }));
         navigate("/admin/dashboard")
 
       } else if (user.role === "manager") {
         localStorage.setItem("manager-token", token);
-        localStorage.setItem("userId", user._id);
         toast.success(res?.data?.message || "Manager login successful!");
-        dispatch(saveUser({ user, token }));
+        // dispatch(saveUser(res.data.user));
         navigate("/manager", { replace: true });
       }
       else {
 
         localStorage.setItem("userToken", res.data.token);
-        localStorage.setItem("userId", res.data.user._id);
+        // localStorage.setItem("userId", res.data.user._id);
         toast.success(res?.data?.message || "User login Successfully!")
-        dispatch(saveUser(user, token));
+        // dispatch(saveUser(user, token));
         // Redirect logic with booking data
         if (from === '/booknow' && bookingData) {
           navigate(from, { state: bookingData });
