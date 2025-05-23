@@ -7,7 +7,7 @@ import { clearUser } from '../../redux/features/userSlice';
 import { toast } from 'react-toastify';
 
 function Header() {
-  const userData = useSelector((state) => state)
+  const userData = useSelector((state) => state.user)
   const navigate = useNavigate();
   const dispatch = useDispatch()
   const handleLogout = () => {
