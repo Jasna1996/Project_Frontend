@@ -11,7 +11,7 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     saveUser: (state, action) => {
-      state.user = action.payload.user
+      state.user = action.payload
       // state.token = action.payload.token || null
       // state.isLoggedIn = !!action.payload?.token
     },
