@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { axiosInstance } from '../../axios/axiosInstance';
 import { addLocations, editLocation, deleteLocation } from '../../services/adminService';
+import { toast, ToastContainer } from 'react-toastify';
 
 
 function ManageLocations() {
@@ -38,14 +39,17 @@ function ManageLocations() {
         try {
             if (editId) {
                 await editLocation(editId, formData)
+                toast.success('Location updated successfully!');
             } else {
                 await addLocations(formData);
+                toast.success('Location added successfully!');
             }
             setFormData({ name: '', address: '', pincode: '', status: 'active' })
             setEditId(null);
             fetchLocations();
         } catch (error) {
             console.error('Submit error:', error);
+            toast.error('Failed to save location!');
         }
     };
 
@@ -53,9 +57,11 @@ function ManageLocations() {
         if (window.confirm('Delete this location?')) {
             try {
                 await deleteLocation(id);
+                toast.success('Location deleted successfully!');
                 fetchLocations();
             } catch (error) {
                 console.error('Delete error:', error);
+                toast.error('Failed to delete location!');
             }
         }
     };
