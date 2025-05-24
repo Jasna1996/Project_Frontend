@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from "react-router-dom";
 import { userLogout } from '../../services/userServices';
@@ -10,6 +10,9 @@ function Header() {
   const userData = useSelector((state) => state.user)
   const navigate = useNavigate();
   const dispatch = useDispatch()
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
   const handleLogout = () => {
     try {
       userLogout().then(() => {
@@ -24,6 +27,20 @@ function Header() {
   }
   const isLoggedIn = userData?.user && Object.keys(userData.user).length > 0;
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+
   return (
     <div className="navbar bg-gradient-to-r from-green-600 via-green-400 to-lime-300  shadow-md px-4 text-white ">
       <div className="flex-1">
@@ -35,12 +52,13 @@ function Header() {
         </Link>
       </div>
 
-      <div className="hidden md:flex flex-1 justify-end">
-        <ul className="flex space-x-6 items-center text-base font-bold flex-nowrap">
-          <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("")}>Home</li>
-          <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/about")}>About Us</li>
-          <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/contactUs")}>Contact Us</li>
-          <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/turfs")}>Turfs</li>
+      <div className="hidden md:flex flex-1 justify-end items-center space-x-6 text-base font-bold">
+        {/* <ul className="flex space-x-6 items-center text-base font-bold flex-nowrap"> */}
+        <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("")}>Home</li>
+        <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/about")}>About Us</li>
+        <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/contactUs")}>Contact Us</li>
+        <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/turfs")}>Turfs</li>
+        {/*           
           {isLoggedIn && (
             <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/bookings")}>Bookings</li>
           )}
@@ -51,9 +69,52 @@ function Header() {
 
             <li className="cursor-pointer" onClick={() => navigate("/login")}>Login</li>
           }
-        </ul>
-      </div>
+        </ul> */}
 
+        {isLoggedIn ? (
+          <div className="relative" ref={dropdownRef}>
+            <div className="flex items-center cursor-pointer space-x-2" onClick={() => setDropdownOpen(!dropdownOpen)}>
+              <div className="avatar">
+                <div className="w-10 rounded-full shadow-md border border-white">
+                  <img
+                    src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                    alt="User Avatar"
+                  />
+                </div>
+              </div>
+              <span>My Profile ⌄</span>
+            </div>
+
+            {dropdownOpen && (
+              <ul className="absolute right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg z-50">
+                <li
+                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => {
+                    setDropdownOpen(false);
+                    navigate('/bookings');
+                  }}>  My Bookings
+                </li>
+                <li
+                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => {
+                    setDropdownOpen(false);
+                    navigate('/changePassword');
+                  }} > Change Password
+                </li>
+                <li
+                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => {
+                    setDropdownOpen(false);
+                    handleLogout();
+                  }}>  Logout
+                </li>
+              </ul>
+            )}
+          </div>
+        ) : (
+          <li className="cursor-pointer" onClick={() => navigate('/login')}> Login </li>
+        )}
+      </div>
       {/* Mobile Dropdown */}
       <div className="dropdown dropdown-end md:hidden">
         <label tabIndex={0} className="btn btn-ghost">
@@ -70,6 +131,7 @@ function Header() {
           {isLoggedIn ? (
             <>
               <li>{userData.user.name}</li>
+              <li><Link to="/changePassword">Change Password</Link></li>
               <li onClick={handleLogout}>Logout</li>
             </>
           ) : (

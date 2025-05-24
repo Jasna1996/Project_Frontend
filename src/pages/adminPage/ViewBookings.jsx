@@ -4,6 +4,8 @@ import { getAllBookings } from '../../services/adminService';
 
 function ViewBookings() {
     const [bookings, setBookings] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const bookingsPerPage = 5;
 
     useEffect(() => {
         const fetchBookings = async () => {
@@ -21,6 +23,12 @@ function ViewBookings() {
     const formatTime = (iso) => new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
 
+    // Pagination logic
+    const totalPages = Math.ceil(bookings.length / bookingsPerPage);
+    const indexOfLastBooking = currentPage * bookingsPerPage;
+    const indexOfFirstBooking = indexOfLastBooking - bookingsPerPage;
+    const currentBookings = bookings.slice(indexOfFirstBooking, indexOfLastBooking);
+
     return (
         <div className="p-4">
             <h2 className="text-xl font-bold mb-4">All Bookings</h2>
@@ -37,7 +45,7 @@ function ViewBookings() {
                         </tr>
                     </thead>
                     <tbody>
-                        {bookings.map((booking) => (
+                        {currentBookings.map((booking) => (
                             <tr key={booking._id}>
                                 <td className="p-2 border">{booking.user_id?.email || "N/A"}</td>
                                 <td className="p-2 border">{booking.turf_id?.name || "N/A"}</td>
@@ -49,6 +57,22 @@ function ViewBookings() {
                         ))}
                     </tbody>
                 </table>
+            </div>
+            {/* Pagination controls */}
+            <div className="mt-4 flex justify-center">
+                <div className="join">
+                    {Array.from({ length: totalPages }, (_, index) => (
+                        <input
+                            key={index + 1}
+                            type="radio"
+                            className="join-item btn btn-square"
+                            name="pagination"
+                            aria-label={`${index + 1}`}
+                            checked={currentPage === index + 1}
+                            onChange={() => setCurrentPage(index + 1)}
+                        />
+                    ))}
+                </div>
             </div>
         </div>
     );
