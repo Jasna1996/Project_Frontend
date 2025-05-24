@@ -52,13 +52,13 @@ function Header() {
         </Link>
       </div>
 
-      <div className="hidden md:flex flex-1 justify-end items-center space-x-6 text-base font-bold">
-        {/* <ul className="flex space-x-6 items-center text-base font-bold flex-nowrap"> */}
-        <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("")}>Home</li>
-        <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/about")}>About Us</li>
-        <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/contactUs")}>Contact Us</li>
-        <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/turfs")}>Turfs</li>
-        {/*           
+      <div className="hidden md:flex flex-1 justify-end items-center text-base font-bold">
+        <ul className="flex space-x-6 list-none m-0 p-0">
+          <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("")}>Home</li>
+          <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/about")}>About Us</li>
+          <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/contactUs")}>Contact Us</li>
+          <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/turfs")}>Turfs</li>
+          {/*           
           {isLoggedIn && (
             <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/bookings")}>Bookings</li>
           )}
@@ -71,49 +71,50 @@ function Header() {
           }
         </ul> */}
 
-        {isLoggedIn ? (
-          <div className="relative" ref={dropdownRef}>
-            <div className="flex items-center cursor-pointer space-x-2" onClick={() => setDropdownOpen(!dropdownOpen)}>
-              <div className="avatar">
-                <div className="w-10 rounded-full shadow-md border border-white">
-                  <img
-                    src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
-                    alt="User Avatar"
-                  />
+          {isLoggedIn ? (
+            <div className="relative" ref={dropdownRef}>
+              <div className="flex items-center cursor-pointer space-x-2" onClick={() => setDropdownOpen(!dropdownOpen)}>
+                <div className="avatar">
+                  <div className="w-8 rounded-full shadow-md border border-white">
+                    <img
+                      src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                      alt="User Avatar"
+                    />
+                  </div>
                 </div>
+                <span>My Profile </span>
               </div>
-              <span>My Profile ⌄</span>
-            </div>
 
-            {dropdownOpen && (
-              <ul className="absolute right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg z-50">
-                <li
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                  onClick={() => {
-                    setDropdownOpen(false);
-                    navigate('/bookings');
-                  }}>  My Bookings
-                </li>
-                <li
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                  onClick={() => {
-                    setDropdownOpen(false);
-                    navigate('/changePassword');
-                  }} > Change Password
-                </li>
-                <li
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                  onClick={() => {
-                    setDropdownOpen(false);
-                    handleLogout();
-                  }}>  Logout
-                </li>
-              </ul>
-            )}
-          </div>
-        ) : (
-          <li className="cursor-pointer" onClick={() => navigate('/login')}> Login </li>
-        )}
+              {dropdownOpen && (
+                <ul className="absolute right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg z-50">
+                  <li
+                    className="px-3 py-1 text-sm hover:bg-white hover:bg-opacity-20 cursor-pointer"
+                    onClick={() => {
+                      setDropdownOpen(false);
+                      navigate('/bookings');
+                    }}>  My Bookings
+                  </li>
+                  <li
+                    className="px-3 py-1 text-sm hover:bg-white hover:bg-opacity-20 cursor-pointer"
+                    onClick={() => {
+                      setDropdownOpen(false);
+                      navigate('/changePassword');
+                    }} > Change Password
+                  </li>
+                  <li
+                    className="px-3 py-1 text-sm hover:bg-white hover:bg-opacity-20 cursor-pointer"
+                    onClick={() => {
+                      setDropdownOpen(false);
+                      handleLogout();
+                    }}>  Logout
+                  </li>
+                </ul>
+              )}
+            </div>
+          ) : (
+            <li className="cursor-pointer text-sm" onClick={() => navigate('/login')}> Login </li>
+          )}
+        </ul>
       </div>
       {/* Mobile Dropdown */}
       <div className="dropdown dropdown-end md:hidden">
