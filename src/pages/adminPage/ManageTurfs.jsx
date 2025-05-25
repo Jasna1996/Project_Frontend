@@ -6,6 +6,7 @@ function ManageTurfs() {
 
 
     const [turfs, setTurfs] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [formData, setFormData] = useState({
         name: "",
         sport: "",
@@ -26,21 +27,27 @@ function ManageTurfs() {
     }, []);
 
     const fetchTurfs = async () => {
+        setLoading(true);
         try {
 
             const response = await getAllTurfs();
             setTurfs(response.data.data)
         } catch (error) {
             console.error("Error fetching turfs:", error);
+        } finally {
+            setLoading(false);
         }
     }
 
     const fetchLocations = async () => {
+        setLoading(true);
         try {
             const res = await axiosInstance.get('/admin/GetAllLocations');
             setLocations(res.data.data);
         } catch (error) {
             console.error("Error fetching locations:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -198,26 +205,36 @@ function ManageTurfs() {
             {/* Turf List */}
             <div className="w-1/2 bg-white shadow-md p-4 rounded">
                 <h2 className="text-xl font-semibold mb-4">Turf List</h2>
-                {turfs.map((turf) => (
-                    <div key={turf._id} className="border-b py-2 flex justify-between items-center">
-                        <div>
-                            <h3 className="font-semibold">{turf.name}</h3>
-                            <img src={turf.image} alt={turf.name} className="w-full h-48 object-cover rounded" />
-                            <p className="text-sm">{turf.description}</p>
-                            <p className="text-sm text-gray-600">Location: {turf.location_id?.name}</p>
-                            <p className="text-sm text-gray-600">
-                                Price:
-                                {Object.entries(turf.pricePerHour).map(([sport, price]) => (
-                                    <span key={sport}> {sport}: ₹{price} </span>))}
-                            </p>
-                            <p className="text-sm text-gray-600">Ratings: {turf.ratings}</p>
-                        </div>
-                        <div className="flex gap-2">
-                            <button onClick={() => handleEdit(turf)} className="btn-sm bg-yellow-500 text-white px-2 py-1">Edit</button>
-                            <button onClick={() => handleDelete(turf._id)} className="btn-sm bg-red-500 text-white px-2 py-1">Delete</button>
-                        </div>
+                {loading ? (
+                    <div className="flex flex-col items-center justify-center space-y-2 mt-10">
+                        <span className="loading loading-dots loading-xs"></span>
+                        <span className="loading loading-dots loading-sm"></span>
+                        <span className="loading loading-dots loading-md"></span>
+                        <span className="loading loading-dots loading-lg"></span>
+                        <span className="loading loading-dots loading-xl"></span>
                     </div>
-                ))}
+                ) : (
+                    turfs.map((turf) => (
+                        <div key={turf._id} className="border-b py-2 flex justify-between items-center">
+                            <div>
+                                <h3 className="font-semibold">{turf.name}</h3>
+                                <img src={turf.image} alt={turf.name} className="w-full h-48 object-cover rounded" />
+                                <p className="text-sm">{turf.description}</p>
+                                <p className="text-sm text-gray-600">Location: {turf.location_id?.name}</p>
+                                <p className="text-sm text-gray-600">
+                                    Price:
+                                    {Object.entries(turf.pricePerHour).map(([sport, price]) => (
+                                        <span key={sport}> {sport}: ₹{price} </span>))}
+                                </p>
+                                <p className="text-sm text-gray-600">Ratings: {turf.ratings}</p>
+                            </div>
+                            <div className="flex gap-2">
+                                <button onClick={() => handleEdit(turf)} className="btn-sm bg-yellow-500 text-white px-2 py-1">Edit</button>
+                                <button onClick={() => handleDelete(turf._id)} className="btn-sm bg-red-500 text-white px-2 py-1">Delete</button>
+                            </div>
+                        </div>
+                    ))
+                )}
             </div>
         </div>
     )

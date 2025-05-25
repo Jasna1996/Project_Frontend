@@ -9,7 +9,9 @@ import { toast } from 'react-toastify';
 function AdminHeader() {
     const userData = useSelector((state) => state.user)
     const navigate = useNavigate();
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const dropdownRef = useRef(null);
     const handleLogout = () => {
         try {
             userLogout().then(() => {
@@ -22,6 +24,19 @@ function AdminHeader() {
             console.log(error)
         }
     }
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setDropdownOpen(false);
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
     const isLoggedIn = userData?.user && Object.keys(userData.user).length > 0;
 
     return (
@@ -32,15 +47,49 @@ function AdminHeader() {
                 </Link>
             </div>
 
-            <div className="hidden md:flex flex-1 justify-end">
-                <ul className="flex space-x-6 items-center text-base font-bold flex-nowrap">
+            <div className="hidden md:flex flex-1 justify-end items-center text-base font-bold">
+                <ul className="flex space-x-6 list-none m-0 p-0">
                     <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("")}>Home</li>
                     <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/admin/managelocations")}>Locations</li>
                     <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/admin/manageturf")}>Turfs</li>
                     <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/admin/managers")}>Managers</li>
                     <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/admin/viewbookings")}>View Bookings</li>
-                    <li className="cursor-pointer" onClick={() => navigate("/login")}>Logout</li>
+                    {isLoggedIn ? (
+                        <div className="relative" ref={dropdownRef}>
+                            <div className="flex items-center cursor-pointer space-x-2" onClick={() => setDropdownOpen(!dropdownOpen)}>
+                                <div className="avatar">
+                                    <div className="w-8 rounded-full shadow-md border border-white">
+                                        <img
+                                            src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                                            alt="User Avatar"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
 
+                            {dropdownOpen && (
+                                <ul className="absolute right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg z-50">
+
+                                    <li
+                                        className="px-3 py-1 text-sm hover:bg-white hover:bg-opacity-20 cursor-pointer"
+                                        onClick={() => {
+                                            setDropdownOpen(false);
+                                            navigate('/changePassword');
+                                        }} > Change Password
+                                    </li>
+                                    <li
+                                        className="px-3 py-1 text-sm hover:bg-white hover:bg-opacity-20 cursor-pointer"
+                                        onClick={() => {
+                                            setDropdownOpen(false);
+                                            handleLogout();
+                                        }}>  Logout
+                                    </li>
+                                </ul>
+                            )}
+                        </div>
+                    ) : (
+                        <li className="cursor-pointer text-base" onClick={() => navigate('/login')}> Login </li>
+                    )}
                 </ul>
             </div>
 

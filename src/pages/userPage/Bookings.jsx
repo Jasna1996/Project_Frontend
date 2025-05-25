@@ -55,7 +55,15 @@ function Bookings() {
         }
     };
 
-    if (loading) return <div className="p-6">Loading bookings...</div>;
+    if (loading) return (
+        <div className="p-6 flex justify-center items-center gap-3">
+            <span className="loading loading-dots loading-xs"></span>
+            <span className="loading loading-dots loading-sm"></span>
+            <span className="loading loading-dots loading-md"></span>
+            <span className="loading loading-dots loading-lg"></span>
+            <span className="loading loading-dots loading-xl"></span>
+        </div>
+    );
     if (error) {
         return (
             <div className="p-6 text-center">

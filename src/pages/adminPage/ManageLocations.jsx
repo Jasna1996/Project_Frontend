@@ -7,6 +7,7 @@ import { toast, ToastContainer } from 'react-toastify';
 function ManageLocations() {
 
     const [locations, setLocations] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [formData, setFormData] = useState({
         name: '',
         address: '',
@@ -16,6 +17,7 @@ function ManageLocations() {
     const [editId, setEditId] = useState(null);
 
     const fetchLocations = async () => {
+        setLoading(true);
         try {
             const res = await axiosInstance.get('/admin/GetAllLocations');
             console.log('Fetched data:', res.data);
@@ -23,6 +25,8 @@ function ManageLocations() {
 
         } catch (error) {
             console.error('Fetch error:', error);
+        } finally {
+            setLoading(false);
         }
     }
     useEffect(() => {
@@ -132,40 +136,50 @@ function ManageLocations() {
         {/* Right - List */}
         <div className="md:w-1/2">
             <h2 className="text-xl font-bold mb-4">All Locations</h2>
-            <div className="space-y-4">
-                {locations.map((loc) => (
-                    <div
-                        key={loc._id}
-                        className="p-4 border rounded-md bg-gray-100 flex justify-between items-center"
-                    >
-                        <div>
-                            <h3 className="font-semibold">{loc.name}</h3>
-                            <p className="text-sm">{loc.address}</p>
-                            <p className="text-sm text-gray-600">Pincode: {loc.pincode}</p>
-                            <p
-                                className={`text-sm font-medium ${loc.status === "active" ? "text-green-700" : "text-red-600"
-                                    }`}
-                            >
-                                Status: {loc.status}
-                            </p>
+            {loading ? (
+                <div className="flex justify-center items-center h-40 space-x-2">
+                    <span className="loading loading-dots loading-xs"></span>
+                    <span className="loading loading-dots loading-sm"></span>
+                    <span className="loading loading-dots loading-md"></span>
+                    <span className="loading loading-dots loading-lg"></span>
+                    <span className="loading loading-dots loading-xl"></span>
+                </div>
+            ) : (
+                <div className="space-y-4">
+                    {locations.map((loc) => (
+                        <div
+                            key={loc._id}
+                            className="p-4 border rounded-md bg-gray-100 flex justify-between items-center"
+                        >
+                            <div>
+                                <h3 className="font-semibold">{loc.name}</h3>
+                                <p className="text-sm">{loc.address}</p>
+                                <p className="text-sm text-gray-600">Pincode: {loc.pincode}</p>
+                                <p
+                                    className={`text-sm font-medium ${loc.status === "active" ? "text-green-700" : "text-red-600"
+                                        }`}
+                                >
+                                    Status: {loc.status}
+                                </p>
+                            </div>
+                            <div className="space-x-2">
+                                <button
+                                    onClick={() => handleEdit(loc)}
+                                    className="bg-yellow-500 text-white px-3 py-1 rounded"
+                                >
+                                    Edit
+                                </button>
+                                <button
+                                    onClick={() => handleDelete(loc._id)}
+                                    className="bg-red-600 text-white px-3 py-1 rounded"
+                                >
+                                    Delete
+                                </button>
+                            </div>
                         </div>
-                        <div className="space-x-2">
-                            <button
-                                onClick={() => handleEdit(loc)}
-                                className="bg-yellow-500 text-white px-3 py-1 rounded"
-                            >
-                                Edit
-                            </button>
-                            <button
-                                onClick={() => handleDelete(loc._id)}
-                                className="bg-red-600 text-white px-3 py-1 rounded"
-                            >
-                                Delete
-                            </button>
-                        </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
+            )}
         </div>
     </div>
     );

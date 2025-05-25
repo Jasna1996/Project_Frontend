@@ -12,6 +12,7 @@ function ManageManagers() {
     const [managers, setManagers] = useState([]);
     const [editingManagerId, setEditingManagerId] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [newManager, setNewManager] = useState({
         name: '',
         email: '',
@@ -24,6 +25,7 @@ function ManageManagers() {
 
     const fetchManagers = async () => {
         try {
+            setLoading(true);
             const response = await GetAllManagers();
             if (response.data.success) {
                 const data = response.data.data;
@@ -39,6 +41,8 @@ function ManageManagers() {
         } catch (error) {
             console.error('Error fetching managers:', error);
             toast.error("Something went wrong fetching managers");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -230,7 +234,15 @@ function ManageManagers() {
                 <div className="w-full lg:w-1/2 p-4 bg-white rounded shadow-md">
                     <h2 className="text-xl font-semibold mb-4">All Managers</h2>
 
-                    {managers.length === 0 ? (
+                    {loading ? (
+                        <div className="flex justify-end">
+                            <span className="loading loading-dots loading-xs"></span>
+                            <span className="loading loading-dots loading-sm"></span>
+                            <span className="loading loading-dots loading-md"></span>
+                            <span className="loading loading-dots loading-lg"></span>
+                            <span className="loading loading-dots loading-xl"></span>
+                        </div>
+                    ) : managers.length === 0 ? (
                         <p className="text-gray-500">No managers assigned yet.</p>
                     ) : (
                         <div className="space-y-4">

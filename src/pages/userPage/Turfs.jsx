@@ -8,9 +8,14 @@ function Turfs() {
 
   const [locations, setLocations] = useState([])
   const [selectedLocationId, setSelectedLocationId] = useState(null);
-  const [turfs, setTurfs] = useState([])
+  const [turfs, setTurfs] = useState([]);
+  const [loadingLocations, setLoadingLocations] = useState(true);
+  const [loadingTurfs, setLoadingTurfs] = useState(false);
+
+
   // ----Backend connection establishes----
   useEffect(() => {
+    setLoadingLocations(true);
     listLocations().then((res) => {
       console.log("Location API response:", res.data);
       const locationList = res.data.data
@@ -20,10 +25,14 @@ function Turfs() {
         setSelectedLocationId(locationList[0]._id)  //auto select first location
       }
     }).catch((err) => console.log(err))
+      .finally(() => {
+        setLoadingLocations(false);
+      });
   }, []);
 
   // Fetch turfs based on selected location
   useEffect(() => {
+    setLoadingTurfs(true);
     if (selectedLocationId) {
       console.log("selectedLocationId:", selectedLocationId);
       listTurfsByLocation(selectedLocationId)
@@ -33,7 +42,10 @@ function Turfs() {
           console.log("Turfs:", res.data.data);
 
         })
-        .catch((err) => console.log("Error fetching turfs:", err));
+        .catch((err) => console.log("Error fetching turfs:", err))
+        .finally(() => {
+          setLoadingTurfs(false);
+        });
     }
   }, [selectedLocationId]);
 
@@ -44,26 +56,47 @@ function Turfs() {
 
       {/* Location Selector */}
       <div className="flex justify-center mb-10">
-        <ul className="flex flex-wrap gap-3 bg-gray-100 p-3 rounded-full shadow-md">
-          {locations.map((location) => (
-            <li key={location._id}>
-              <button
-                onClick={() => setSelectedLocationId(location._id)}
-                className={`px-5 py-2 rounded-full transition-all font-medium text-sm
+
+        {loadingLocations ? (
+          <div className="flex gap-2 items-center">
+            <span className="loading loading-dots loading-xs"></span>
+            <span className="loading loading-dots loading-sm"></span>
+            <span className="loading loading-dots loading-md"></span>
+            <span className="loading loading-dots loading-lg"></span>
+            <span className="loading loading-dots loading-xl"></span>
+            <span>Loading locations...</span>
+          </div>
+        ) : (
+          <ul className="flex flex-wrap gap-3 bg-gray-100 p-3 rounded-full shadow-md">
+            {locations.map((location) => (
+              <li key={location._id}>
+                <button
+                  onClick={() => setSelectedLocationId(location._id)}
+                  className={`px-5 py-2 rounded-full transition-all font-medium text-sm
                   ${selectedLocationId === location._id
-                    ? 'bg-green-600 text-white'
-                    : 'bg-white text-gray-800 hover:bg-green-200 border border-gray-300'}`}
-              >
-                {location.name}
-              </button>
-            </li>
-          ))}
-        </ul>
+                      ? 'bg-green-600 text-white'
+                      : 'bg-white text-gray-800 hover:bg-green-200 border border-gray-300'}`}
+                >
+                  {location.name}
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       {/* Turf Display */}
       <div className="space-y-8">
-        {turfs.length > 0 ? (
+        {loadingTurfs ? (
+          <div className="flex gap-2 items-center justify-center">
+            <span className="loading loading-dots loading-xs"></span>
+            <span className="loading loading-dots loading-sm"></span>
+            <span className="loading loading-dots loading-md"></span>
+            <span className="loading loading-dots loading-lg"></span>
+            <span className="loading loading-dots loading-xl"></span>
+            <span>Loading turfs...</span>
+          </div>
+        ) : turfs.length > 0 ? (
           turfs.map((turf) => (
             <div key={turf._id} className="bg-white shadow-xl rounded-xl overflow-hidden flex flex-col lg:flex-row">
               {/* Image - Left */}
@@ -119,7 +152,13 @@ function Turfs() {
             </div>
           ))
         ) : (
-          <p className="text-gray-500 text-center">No turfs available for this location.</p>
+          <div role="alert" className="alert alert-info flex items-center gap-2 justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="h-6 w-6 shrink-0 stroke-current">
+              <path strokeLinecap="round" rokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+              </path>
+            </svg>
+            <span>No turfs available for this location.</span>
+          </div>
         )}
       </div>
     </div>
