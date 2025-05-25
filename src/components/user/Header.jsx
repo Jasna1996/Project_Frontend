@@ -82,7 +82,6 @@ function Header() {
                     />
                   </div>
                 </div>
-                <span>My Profile </span>
               </div>
 
               {dropdownOpen && (
@@ -112,7 +111,7 @@ function Header() {
               )}
             </div>
           ) : (
-            <li className="cursor-pointer text-sm" onClick={() => navigate('/login')}> Login </li>
+            <li className="cursor-pointer text-base" onClick={() => navigate('/login')}> Login </li>
           )}
         </ul>
       </div>
