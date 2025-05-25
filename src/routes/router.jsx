@@ -73,7 +73,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'changepassword',
-        element: <ChangePassword />
+        element: <ChangePassword role="user" />
       }
 
     ]
