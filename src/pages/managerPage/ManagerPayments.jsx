@@ -3,15 +3,20 @@ import { getManagerPayments } from '../../services/managerServices';
 import { toast } from 'react-toastify';
 
 const ManagerPayments = () => {
-
+    const userId = localStorage.getItem('userId');
     const [payments, setPayments] = useState([]);
+
     useEffect(() => {
-        fetchPayments();
-    }, []);
+        if (userId) {
+            fetchPayments();
+        } else {
+            toast.error("User not logged in");
+        }
+    }, [userId]);
 
     const fetchPayments = async () => {
         try {
-            const response = await getManagerPayments();
+            const response = await getManagerPayments(userId);
             setPayments(response.data.data)
         } catch (error) {
             toast.error("Failed to fetch payments");

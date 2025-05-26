@@ -16,13 +16,19 @@ const ManageTurf = () => {
     const [previewImage, setPreviewImage] = useState(null);
     const [isSaving, setIsSaving] = useState(false);
     const dispatch = useDispatch();
+
+    const userId = localStorage.getItem('userId');
     useEffect(() => {
-        fetchTurfs()
-    }, [])
+        if (userId) {
+            fetchTurfs()
+        } else {
+            toast.error("User not logged in");
+        }
+    }, [userId])
 
     const fetchTurfs = async () => {
         try {
-            const response = await getManagerTurf();
+            const response = await getManagerTurf(userId);
             setTurfs(response.data.data);
         } catch (error) {
             toast.error("Failed to fetch turf");

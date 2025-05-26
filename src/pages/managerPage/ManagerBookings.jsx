@@ -3,15 +3,20 @@ import { toast } from 'react-toastify';
 import { getManagerBookings } from '../../services/managerServices';
 
 const ManagerBookings = () => {
-
+    const userId = localStorage.getItem('userId');
     const [bookings, setBookings] = useState([]);
+
     useEffect(() => {
-        fetchBookings();
+        if (userId) {
+            fetchBookings();
+        } else {
+            toast.error("User not logged in");
+        }
     }, []);
 
     const fetchBookings = async () => {
         try {
-            const response = await getManagerBookings();
+            const response = await getManagerBookings(userId);
             setBookings(response.data.data)
         } catch (error) {
             toast.error("Failed to fetch bookings")
