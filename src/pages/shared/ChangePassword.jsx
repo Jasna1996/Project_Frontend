@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { changePassword as changePasswordService } from '../../services/passwordService';
@@ -8,18 +8,12 @@ function ChangePassword({ role }) {
 
 
     const navigate = useNavigate();
-    const [userId, setUserId] = useState("");
     const [values, setValues] = useState({
         oldPassword: "",
         newPassword: "",
         confirmPassword: "",
     })
     const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        const id = localStorage.getItem("userId");
-        if (id) setUserId();
-    }, []);
 
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -31,7 +25,6 @@ function ChangePassword({ role }) {
         setLoading(true);
         try {
             const payload = {
-                userId,
                 oldPassword: values.oldPassword,
                 newPassword: values.newPassword,
                 confirmPassword: values.confirmPassword,
