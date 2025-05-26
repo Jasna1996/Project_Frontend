@@ -55,7 +55,7 @@ function AdminHeader() {
                     <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/admin/managers")}>Managers</li>
                     <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/admin/viewbookings")}>View Bookings</li>
                     {isLoggedIn ? (
-                        <div className="relative" ref={dropdownRef}>
+                        <li className="relative" ref={dropdownRef}>
                             <div className="flex items-center cursor-pointer space-x-2" onClick={() => setDropdownOpen(!dropdownOpen)}>
                                 <div className="avatar">
                                     <div className="w-8 rounded-full shadow-md border border-white">
@@ -69,26 +69,31 @@ function AdminHeader() {
 
                             {dropdownOpen && (
                                 <ul className="absolute right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg z-50">
-
                                     <li
-                                        className="px-3 py-1 text-sm hover:bg-white hover:bg-opacity-20 cursor-pointer"
+                                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                                         onClick={() => {
                                             setDropdownOpen(false);
                                             navigate('/changePassword');
-                                        }} > Change Password
+                                        }}
+                                    >
+                                        Change Password
                                     </li>
                                     <li
-                                        className="px-3 py-1 text-sm hover:bg-white hover:bg-opacity-20 cursor-pointer"
+                                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                                         onClick={() => {
                                             setDropdownOpen(false);
                                             handleLogout();
-                                        }}>  Logout
+                                        }}
+                                    >
+                                        Logout
                                     </li>
                                 </ul>
                             )}
-                        </div>
+                        </li>
                     ) : (
-                        <li className="cursor-pointer text-base" onClick={() => navigate('/login')}> Login </li>
+                        <li className="cursor-pointer text-base" onClick={() => navigate('/login')}>
+                            Login
+                        </li>
                     )}
                 </ul>
             </div>
@@ -100,24 +105,24 @@ function AdminHeader() {
                         <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
                 </label>
-                <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 p-2 shadow bg-green-500  text-white rounded-box w-52">
+                <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 p-2 shadow bg-green-500 text-white rounded-box w-52">
                     <li><Link to="/">Home</Link></li>
-                    <li><Link to="/turfs">Turfs</Link></li>
-                    <li><Link to="/bookings">Bookings</Link></li>
+                    <li><Link to="/admin/managelocations">Locations</Link></li>
+                    <li><Link to="/admin/manageturf">Turfs</Link></li>
+                    <li><Link to="/admin/managers">Managers</Link></li>
+                    <li><Link to="/admin/viewbookings">View Bookings</Link></li>
                     {isLoggedIn ? (
                         <>
-                            <li>{userData.user.name}</li>
+                            <li onClick={() => navigate('/changePassword')}>Change Password</li>
                             <li onClick={handleLogout}>Logout</li>
                         </>
                     ) : (
-                        <li>
-                            <Link to="/login">Login</Link>
-                        </li>
+                        <li><Link to="/login">Login</Link></li>
                     )}
                 </ul>
             </div>
         </div>
-    )
+    );
 }
 
 export default AdminHeader
