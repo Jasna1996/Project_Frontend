@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from "react-router-dom";
 import { userLogout } from '../../services/userServices';
@@ -10,10 +10,6 @@ function AdminHeader() {
     const userData = useSelector((state) => state.user)
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [dropdownOpen, setDropdownOpen] = useState(false);
-    const dropdownRef = useRef(null);
-
-    const isLoggedIn = userData?.user && Object.keys(userData.user).length > 0;
     const handleLogout = () => {
         try {
             userLogout().then(() => {
@@ -26,16 +22,7 @@ function AdminHeader() {
             console.log(error)
         }
     }
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setDropdownOpen(false);
-            }
-        };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
+    const isLoggedIn = userData?.user && Object.keys(userData.user).length > 0;
 
     return (
         <div className="navbar bg-gradient-to-r from-green-600 via-green-400 to-lime-300  shadow-md px-4 text-white ">
@@ -52,44 +39,10 @@ function AdminHeader() {
                     <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/admin/manageturf")}>Turfs</li>
                     <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/admin/managers")}>Managers</li>
                     <li className="cursor-pointer whitespace-nowrap" onClick={() => navigate("/admin/viewbookings")}>View Bookings</li>
-                    {/* <li className="cursor-pointer" onClick={() => navigate("/login")}>Logout</li> */}
-                    {isLoggedIn ? (
-                        <li className="relative" ref={dropdownRef}>
-                            <div className="flex items-center cursor-pointer space-x-2" onClick={() => setDropdownOpen(!dropdownOpen)}>
-                                <div className="w-8 h-8 rounded-full border border-white overflow-hidden shadow-md">
-                                    <img
-                                        src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
-                                        alt="Profile"
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
-                                <span>{userData.user.name}</span>
-                            </div>
-                            {dropdownOpen && (
-                                <ul className="absolute right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg z-50">
-                                    <li
-                                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                                        onClick={() => {
-                                            setDropdownOpen(false);
-                                            navigate('/changePassword');
-                                        }}> Change Password
-                                    </li>
-                                    <li
-                                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                                        onClick={() => {
-                                            setDropdownOpen(false);
-                                            handleLogout();
-                                        }} > Logout
-                                    </li>
-                                </ul>
-                            )}
-                        </li>
-                    ) : (
-                        <li onClick={() => navigate('/login')} className="cursor-pointer">Login</li>
-                    )}
+                    <li className="cursor-pointer" onClick={() => navigate("/login")}>Logout</li>
+
                 </ul>
             </div>
-
 
             {/* Mobile dropdown */}
             <div className="dropdown dropdown-end md:hidden">
@@ -104,16 +57,17 @@ function AdminHeader() {
                     <li><Link to="/bookings">Bookings</Link></li>
                     {isLoggedIn ? (
                         <>
-                            <li><span className="font-semibold">{userData.user.name}</span></li>
-                            <li><Link to="/changePassword">Change Password</Link></li>
-                            <li onClick={handleLogout} className="cursor-pointer">Logout</li>
+                            <li>{userData.user.name}</li>
+                            <li onClick={handleLogout}>Logout</li>
                         </>
                     ) : (
-                        <li><Link to="/login">Login</Link></li>
+                        <li>
+                            <Link to="/login">Login</Link>
+                        </li>
                     )}
                 </ul>
             </div>
-        </div >
+        </div>
     )
 }
 
